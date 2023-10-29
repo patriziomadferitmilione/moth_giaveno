@@ -2,10 +2,14 @@
   <el-container direction="vertical">
     <el-row :gutter="20">
       <el-col :span="24">
-        <el-card shadow="always">
+        <!-- <el-card shadow="always">
           <h1>Chi Siamo</h1>
           <h2>La tua soddisfazione, il nostro obiettivo</h2>
-        </el-card>
+        </el-card> -->
+        <div class="header">
+          <h1>Chi Siamo</h1>
+          <h2>La tua soddisfazione, il nostro obiettivo</h2>
+        </div>
       </el-col>
     </el-row>
     <el-row class="row" :gutter="20">
@@ -51,13 +55,50 @@ export default {
 </script>
 
 <style scoped>
+.header {
+  width: 100vw;
+  height: 100vh;
+  margin-bottom: 4rem;
+  font-size: 60px;
+  text-align: center;
+  background: url('/images/6.jpg') no-repeat center center / cover;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 6rem;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5), 0 10px 6px rgba(0, 0, 0, 0.16);
+  position: relative;
+  z-index: 1;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.header h1,
+.header h2,
+.header h3 {
+  border-radius: 5px;
+  padding: 1rem;
+  z-index: 2;
+}
+
 h1,
 h2 {
   text-align: center;
   margin: 0;
 }
 h2 {
-  color: #606266;
+  color: var(--link);
   font-size: 1.5rem;
   font-weight: normal;
 }

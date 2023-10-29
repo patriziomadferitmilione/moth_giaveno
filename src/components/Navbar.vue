@@ -17,10 +17,12 @@
     <el-sub-menu index="2">
       <template #title>Instruments</template>
       <router-link to="/guitars">
-        <el-menu-item index="2-1">Chitarre</el-menu-item>
+        <el-menu-item index="2-1">Guitars</el-menu-item>
       </router-link>
-      <el-menu-item index="2-2">Bass</el-menu-item>
-      <el-menu-item index="2-3">Custom</el-menu-item>
+      <router-link to="/bass">
+        <el-menu-item index="2-2">Bass</el-menu-item>
+      </router-link>
+      <!-- <el-menu-item index="2-3">Custom</el-menu-item> -->
     </el-sub-menu>
     <router-link to="/services">
       <el-menu-item index="3">Services</el-menu-item>

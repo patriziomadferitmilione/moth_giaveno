@@ -1,4 +1,7 @@
 <template>
+  <div class="header">
+    <h1>Contatti</h1>
+  </div>
   <div class="contact-page">
     <!-- Map Section -->
     <div class="map-section">
@@ -16,27 +19,18 @@
     <!-- Contact Information -->
     <div class="contact-info">
       <h2>Informazioni di Contatto</h2>
+      <br />
       <p>
-        Indirizzo: Via Monte Robinet, 25, 10094 Giaveno TO, Italia <br />
-        Telefono: +39 06 12345678 <br />
-        Email: info@liutaio.it
+        Indirizzo: Via Monte Robinet 25, <br />
+        10094 Giaveno TO, Italia <br />
+        Telefono: <a href="tel:+390612345678">+39 06 12345678</a><br />
+
+        Email:
+        <a href=" mailto:mothlutherie@gmail.com">mothlutherie@gmail.com</a>
       </p>
     </div>
 
     <!-- Contact Form -->
-    <!-- <div class="contact-form">
-      <h2>Contattaci</h2>
-      <el-form :model="form" @submit.native.prevent="handleSubmit">
-        <el-input v-model="form.name" placeholder="Il tuo nome"></el-input>
-        <el-input v-model="form.email" placeholder="La tua email"></el-input>
-        <el-input
-          type="textarea"
-          v-model="form.message"
-          placeholder="Il tuo messaggio"
-        ></el-input>
-        <el-button type="primary" @click="handleSubmit">Invia</el-button>
-      </el-form>
-    </div> -->
   </div>
 </template>
 
@@ -64,7 +58,7 @@ export default {
 .contact-page {
   background-color: var(--white);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 20px;
   padding: 1rem;
@@ -75,5 +69,60 @@ export default {
   width: 80%;
   margin: 0 auto;
   text-align: center;
+  color: #212121;
+}
+
+.map-section iframe {
+  border-radius: 5px;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5), 0 10px 6px rgba(0, 0, 0, 0.16);
+}
+
+.contact-info {
+  font-size: 25px;
+}
+
+.header {
+  width: 100vw;
+  height: 90vh;
+  margin-bottom: 4rem;
+  font-size: 60px;
+  text-align: center;
+  background: url('/images/8.jpg') no-repeat center center / cover;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem;
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.5), 0 30px 46px rgba(0, 0, 0, 0.16);
+  position: relative;
+  z-index: 1;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.header h1 {
+  border: 2px solid white;
+  border-radius: 5px;
+  padding: 1rem;
+  z-index: 2;
+}
+
+a {
+  text-decoration: none;
+  color: #212121;
+}
+
+a:hover {
+  cursor: pointer;
+  color: #262166;
 }
 </style>

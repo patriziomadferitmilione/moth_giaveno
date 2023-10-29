@@ -12,10 +12,13 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@mdi/font": "^7.3.67",
     "element-plus": "^2.3.14",
+    "font-awesome": "^4.7.0",
     "unplugin-element-plus": "^0.8.0",
     "vue": "^3.3.4",
-    "vue-router": "^4.0.13"
+    "vue-router": "^4.0.13",
+    "wave-ui": "^3.7.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

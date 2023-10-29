@@ -1,0 +1,62 @@
+[
+  {
+    "title": "SETUP & MANUTENZIONE",
+    "content": "Grazie a un metodo affinato in anni di esperienza, riporterò il vostro strumento alla suonabilità e funzionalità sempre desiderata.Nel laboratorio Moth il setup viene personalizzato e cucito su misura, tenendo conto del genere musicale, delle esigenze, del gusto e del tocco di ciascun musicista, per farti ottenere sempre il massimo dal tuo strumento. La lavorazione comprende: cambio corde, pulizia completa dello strumento (tasti, hardware, tastiera) con prodotti specifici dedicati, regolazione truss-rod, regolazione action, regolazione capotasto, intonazione, regolazione pickups, disossidazione componenti elettronici, lubrificazione capotasto/sellette, controllo livello batteria (su strumenti attivi), controllo/serraggio di tutti i componenti e viteria, rinforzo pin tracolla (se necessario), controllo stato catenatura (su strumenti acustici), zeppatura manico “full contact” (se necessaria). Oltre al set up riceverai anche una scheda valutativa delle condizioni funzionali dello strumento, che ti permetterà di conservarlo in condizioni ottimali nel corso degli anni evitando le brutte sorprese.",
+    "text_color": "#212121",
+    "background_color": "#f0f1fa",
+    "title_text_color": "#212121",
+    "title_background_color": "#fff",
+    "image_path": "images/1.jpg",
+    "icon": "fa fa-cogs"
+  },
+  {
+    "title": "TESTATURA",
+    "content": "I tasti sono il cuore dello strumento e spesso possono essere causa di problemi come stonature, buzzing, playing difficoltoso o setup scomodi, per questo è importante mantenerli sempre al meglio delle loro condizioni funzionali. Nel laboratorio di liuteria Moth potrai usufruire di tutti i servizi necessari per avere tasti sempre perfetti, come: rettifica (parziale o totale) con metodo di lavorazione in 3 step, ricoronatura, ribattitura e stabilizzazione, lucidatura, fret dressing (o smussatura), ritastatura (anche con tasti in acciaio inossidabile per una maggior durevolezza).",
+    "text_color": "#212121",
+    "background_color": "#f0f1fa",
+    "title_text_color": "#212121",
+    "title_background_color": "#fff",
+    "image_path": "images/6.jpg",
+    "icon": "fa fa-cog"
+  },
+  {
+    "title": "VERNICIATURA",
+    "content": "Nel laboratorio Moth potrai usufruire di tutti i servizi di finitura necessari per personalizzare o riparare la verniciatura del tuo strumento.",
+    "text_color": "#212121",
+    "background_color": "#f0f1fa",
+    "title_text_color": "#212121",
+    "title_background_color": "#fff",
+    "image_path": "images/2.jpg",
+    "icon": "fa fa-paint-brush"
+  },
+  {
+    "title": "CABLAGGIO & ELETTRONICA",
+    "content": "Nel laboratorio Moth il tuo strumento potrà finalmente trovare una nuova voce, o recuperare quella perduta, grazie ai servizi di ricablaggio, cambio pickups, cambio componenti, installazione piezo/midi/preamp, riavvolgimento pickups e costruzione di pickups custom.",
+    "text_color": "#212121",
+    "background_color": "#f0f1fa",
+    "title_text_color": "#212121",
+    "title_background_color": "#fff",
+    "image_path": "images/3.jpg",
+    "icon": "fa fa-plug"
+  },
+  {
+    "title": "RIPARAZIONI STRUTTURALI",
+    "content": "Nel laboratorio di liuteria Moth si effettuano riparazioni strutturali di ogni tipo su strumenti a pizzico: palette spezzate, scollaggi, crepe, incollaggio ponti su strumenti acustici, neck re-set, incollaggio catene, rasatura ponti strumenti acustici, riparazione/sostituzione truss rods, ripristino angolo incidenza, riposizionamento ponte, riduzione bombatura tavola armonica.",
+    "text_color": "#212121",
+    "background_color": "#f0f1fa",
+    "title_text_color": "#212121",
+    "title_background_color": "#fff",
+    "image_path": "images/4.jpg",
+    "icon": "fa fa-building"
+  },
+  {
+    "title": "CUSTOM",
+    "content": "Fai fare un salto di qualità al tuo strumento modificandolo o personalizzandolo: nel laboratorio Moth, potrai chiedere un parere professionale su come ottenere sempre il meglio dal tuo strumento migliorandone la funzionalità o cambiandone l'esetica.",
+    "text_color": "#212121",
+    "background_color": "#f0f1fa",
+    "title_text_color": "#212121",
+    "title_background_color": "#fff",
+    "image_path": "images/5.webp",
+    "icon": "fa fa-lightbulb-o"
+  }
+]

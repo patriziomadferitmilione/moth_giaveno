@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <h1>Chitarre</h1>
+    <h1>Bassi</h1>
   </div>
   <el-tabs
     type="border-card"
@@ -14,21 +14,12 @@
     <el-tab-pane class="tab_content">
       <template #label>
         <span class="custom-tabs-label">
-          <!-- <el-icon><calendar /></el-icon> -->
-          <span>Original</span>
+          <span>Original Bass</span>
         </span>
       </template>
       <el-col class="col">
-        <div
-          class="guitar_card"
-          v-for="(item, index) in guitarsData"
-          :key="index"
-        >
-          <img
-            :src="item.image_path"
-            alt="Guitar Image"
-            class="guitar_card-img"
-          />
+        <div class="bass_card" v-for="(item, index) in bassData" :key="index">
+          <img :src="item.image_path" alt="Bass Image" class="bass_card-img" />
           <h3>{{ item.name }}</h3>
           <p>{{ item.description }}</p>
         </div>
@@ -37,21 +28,16 @@
     <el-tab-pane class="tab_content">
       <template #label>
         <span class="custom-tabs-label">
-          <!-- <el-icon><calendar /></el-icon> -->
-          <span>Custom</span>
+          <span>Custom Bass</span>
         </span>
       </template>
       <el-col class="col">
         <div
-          class="guitar_card"
-          v-for="(item, index) in guitars_custom_Data"
+          class="bass_card"
+          v-for="(item, index) in bass_custom_Data"
           :key="index"
         >
-          <img
-            :src="item.image_path"
-            alt="Guitar Image"
-            class="guitar_card-img"
-          />
+          <img :src="item.image_path" alt="Bass Image" class="bass_card-img" />
           <h3>{{ item.name }}</h3>
           <p>{{ item.description }}</p>
         </div>
@@ -64,42 +50,42 @@
 import { ref, onMounted } from 'vue'
 
 export default {
-  name: 'TabsGuitars',
+  name: 'TabsBass',
   setup() {
     const currentDate = ref(new Date())
-    const guitarsData = ref([])
-    const guitars_custom_Data = ref([])
-    const baseUrl = 'https://antoniandre.github.io/wave-ui/'
+    const bassData = ref([])
+    const bass_custom_Data = ref([])
 
     onMounted(async () => {
       try {
-        const response = await fetch('/guitars.json')
+        const response = await fetch('/bass.json')
         if (response.ok) {
           const data = await response.json()
-          guitarsData.value = data
+          bassData.value = data
         } else {
-          console.error('Failed to fetch guitars.json')
+          console.error('Failed to fetch bass.json')
         }
       } catch (error) {
         console.error('An error occurred:', error)
       }
       try {
-        const response = await fetch('/guitars_custom.json')
+        const response = await fetch('/bass_custom.json')
         if (response.ok) {
           const data = await response.json()
-          guitars_custom_Data.value = data
+          bass_custom_Data.value = data
         } else {
-          console.error('Failed to fetch guitars.json')
+          console.error('Failed to fetch bass_custom.json')
         }
       } catch (error) {
         console.error('An error occurred:', error)
       }
     })
 
-    return { currentDate, guitarsData, guitars_custom_Data, baseUrl }
+    return { currentDate, bassData, bass_custom_Data }
   },
 }
 </script>
+
 <style scoped>
 .header {
   width: 100vw;
@@ -107,7 +93,7 @@ export default {
   margin-bottom: 4rem;
   font-size: 60px;
   text-align: center;
-  background: url('/images/6.jpg') no-repeat center center / cover;
+  background: url('/images/7.jpg') no-repeat center center / cover;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -183,7 +169,7 @@ p {
   width: 100%;
 }
 
-.guitar_card {
+.bass_card {
   width: 90vw;
   height: fit-content;
   border: 1px solid #ccc;
@@ -200,19 +186,19 @@ p {
   margin-bottom: 1rem;
 }
 
-.guitar_card h3 {
+.bass_card h3 {
   font-size: 35px;
   color: #212121;
 }
 
-.guitar_card:hover {
+.bass_card:hover {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
     0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
     0 8px 16px rgba(0, 0, 0, 0.11) inset;
   transition: box-shadow 0.3s ease;
 }
 
-.guitar_card-img {
+.bass_card-img {
   max-width: 60vw;
   border-radius: 5px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
