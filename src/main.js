@@ -16,6 +16,7 @@ import About from './components/About.vue'
 import TabsGuitars from './components/TabsGuitars.vue'
 import TabsBass from './components/TabsBass.vue'
 import Services from './components/Services.vue'
+import Services2 from './components/Services2.vue'
 import Contacts from './components/Contacts.vue'
 
 const routes = [
@@ -24,6 +25,7 @@ const routes = [
   { path: '/guitars', component: TabsGuitars },
   { path: '/bass', component: TabsBass },
   { path: '/services', component: Services },
+  { path: '/services2', component: Services2 },
   { path: '/contacts', component: Contacts },
 ]
 

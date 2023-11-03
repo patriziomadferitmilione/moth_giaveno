@@ -5,10 +5,12 @@
     mode="horizontal"
     active-text-color="#ffd04b"
     @select="handleSelect"
-    :ellipsis="false"
+    :ellipsis="ellipsis"
   >
     <router-link to="/">
-      <el-menu-item index="0">LOGO</el-menu-item>
+      <el-menu-item class="logo" index="0">
+        <img src="/images/logo.png" alt="logo" />
+      </el-menu-item>
     </router-link>
     <div class="flex-grow" />
     <router-link to="/about">
@@ -27,10 +29,13 @@
     <router-link to="/services">
       <el-menu-item index="3">Services</el-menu-item>
     </router-link>
+    <router-link to="/services2">
+      <el-menu-item index="3">Services2</el-menu-item>
+    </router-link>
     <router-link to="/contacts">
       <el-menu-item index="4">Contacts</el-menu-item>
     </router-link>
-    <el-menu-item index="5">Generatore</el-menu-item>
+    <el-menu-item index="5">Configuratore</el-menu-item>
     <el-icon :size="20">
       <Edit />
     </el-icon>
@@ -46,16 +51,27 @@
   </el-menu>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const activeIndex = ref('1')
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
+<script>
+export default {
+  data() {
+    return {
+      activeIndex: '1',
+      ellipsis: false,
+    }
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath)
+    },
+  },
 }
 </script>
 
 <style scoped>
+#navbar {
+  border: none;
+}
+
 .el-menu {
   position: sticky;
   top: 0;
@@ -64,5 +80,9 @@ const handleSelect = (key: string, keyPath: string[]) => {
 
 .flex-grow {
   flex-grow: 1;
+}
+
+img {
+  max-height: 100%;
 }
 </style>
