@@ -57,7 +57,7 @@ export default {
 <style scoped>
 .header {
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
   margin-bottom: 4rem;
   font-size: 60px;
   text-align: center;
@@ -114,5 +114,9 @@ p {
   justify-content: center;
   padding: 1rem;
   background-color: var(--white);
+}
+
+h1 {
+  color: var(--white);
 }
 </style>

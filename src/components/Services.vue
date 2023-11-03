@@ -347,4 +347,159 @@ p {
   max-width: 100%;
   height: auto;
 }
+
+@media (max-width: 480px) {
+  .container {
+    padding-bottom: 3rem;
+  }
+  .header h1 {
+    font-size: 40px;
+  }
+  .service-card {
+    width: 80vw;
+    height: fit-content;
+    padding: 1.5rem;
+  }
+
+  .modal {
+    background: var(--white);
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+
+  .modal-close {
+    display: none;
+  }
+
+  .modal-content {
+    flex-direction: column;
+    width: 80vw;
+    height: fit-content;
+    padding: 0.5rem;
+    overflow: scroll;
+    padding-bottom: 0;
+    z-index: 1000;
+  }
+
+  .modal-content img {
+    max-width: 90%;
+    margin-right: 0;
+    margin-bottom: 3rem;
+  }
+
+  .modal-content p {
+    font-size: 15px;
+    max-height: 40vh;
+    overflow: scroll;
+    line-height: 1.4;
+  }
+
+  .accordion {
+    padding: 0.5rem;
+    width: 95%;
+    box-shadow: none;
+  }
+
+  .acc_title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90vw;
+    padding: 1rem;
+    border-radius: 5px;
+  }
+
+  .acc_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    width: 90vw !important;
+    padding: 1rem;
+    border-radius: 5px;
+  }
+
+  .acc_item img {
+    max-width: 90%;
+  }
+
+  .acc_item p {
+    font-size: 20px;
+    line-height: 1.4;
+    padding: 0.5rem;
+    margin: 0;
+    max-height: 40vh;
+    overflow: scroll;
+    margin-top: 1rem;
+  }
+
+  .w-accordion__item-title .acc_title span,
+  .w-accordion__item-title .acc_title {
+    color: rgb(33, 33, 33);
+    background-color: var(--white);
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 5px;
+
+    font-weight: bold;
+    font-size: 30px;
+    width: 90vw;
+  }
+  .w-accordion__item-title .acc_title span {
+    width: 80vw !important;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .service-card .w-icon {
+    font-size: 10em !important;
+    color: black;
+  }
+
+  .service-card h3 {
+    padding-right: 1rem;
+    padding-left: 1rem;
+    margin-top: 3rem;
+    font-size: 30px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .container {
+    padding-bottom: 2rem;
+  }
+  .header h1 {
+    font-size: 50px;
+  }
+  .service-card {
+    width: 45vw;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    padding-bottom: 2.5rem;
+  }
+  .header h1 {
+    font-size: 55px;
+  }
+  .service-card {
+    width: 30vw;
+  }
+}
+
+@media (min-width: 1025px) {
+  .container {
+    padding-bottom: 3rem;
+  }
+  .header h1 {
+    font-size: 60px;
+  }
+  .service-card {
+    width: 25vw;
+  }
+}
 </style>

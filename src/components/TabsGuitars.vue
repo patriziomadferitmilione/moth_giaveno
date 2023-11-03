@@ -130,8 +130,9 @@ export default {
 }
 
 .header h1 {
-  border: 2px solid white;
+  border: 2px solid var(--link);
   border-radius: 5px;
+  color: var(--link);
   padding: 1rem;
   z-index: 2;
 }
@@ -217,5 +218,23 @@ p {
   border-radius: 5px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
   margin-bottom: 2rem;
+}
+
+/* Style the active tab */
+:deep(.el-tabs__item.is-active) {
+  background-color: var(--white) !important;
+  color: var(--link) !important;
+}
+
+/* Style all the tabs */
+:deep(.el-tabs__item) {
+  background-color: #212121;
+  color: black;
+}
+
+/* Style hover effect */
+:deep(.el-tabs__item:hover) {
+  background-color: lightgrey !important;
+  color: var(--link) !important;
 }
 </style>
