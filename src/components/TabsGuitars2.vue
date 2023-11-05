@@ -160,6 +160,8 @@ export default {
 }
 
 .tab_content {
+  background-color: var(--white) !important;
+
   border-radius: 5px;
   width: 100vw;
 }
@@ -178,7 +180,7 @@ p {
 
 :deep(.el-tabs__item.is-active) {
   background-color: var(--white) !important;
-  color: var(--link) !important;
+  color: var(--shadow2) !important;
 }
 
 :deep(.el-tabs__item) {
@@ -192,7 +194,7 @@ p {
 .accordion {
   padding: 1rem;
   width: 100vw !important;
-  background-color: none !important;
+  background-color: var(--white) !important;
   box-shadow: none !important;
   display: flex;
   justify-content: center;
@@ -210,7 +212,7 @@ p {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: transparent !important;
+  background-color: var(--white) !important;
   border: none !important;
   box-shadow: none !important;
   text-align: center;
@@ -232,7 +234,7 @@ p {
   border-radius: 5px;
   position: relative;
   padding: 0;
-  background-color: transparent !important;
+  background-color: var(--white) !important;
 }
 
 .content_overlay {
@@ -268,6 +270,6 @@ p {
   color: var(--shadow2) !important;
   border: none !important;
   box-shadow: none !important;
-  background-color: transparent !important;
+  background-color: var(--white) !important;
 }
 </style>
