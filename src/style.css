@@ -11,8 +11,7 @@ body {
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   background-color: var(--white);
-  background: url('../public/images/logo_beige.png') center center no-repeat
-    fixed cover !important;
+  background: url('/images/logo_beige.png') center center no-repeat fixed cover !important;
 }
 
 :root {

@@ -133,7 +133,7 @@ export default {
 
 <style scoped>
 .container {
-  background-image: url('../public/images/logo_beige.png');
+  background-image: url('images/logo_beige.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
