@@ -3,13 +3,13 @@
     :default-active="activeIndex"
     class="el-menu"
     mode="horizontal"
-    active-text-color="#ffd04b"
+    active-text-color="#c3934c"
     @select="handleSelect"
     :ellipsis="ellipsis"
   >
     <router-link to="/">
       <el-menu-item class="logo" index="0">
-        <img src="/images/logo.png" alt="logo" />
+        <img src="/images/logo_beige.png" alt="logo" />
       </el-menu-item>
     </router-link>
     <div class="flex-grow" />

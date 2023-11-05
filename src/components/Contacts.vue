@@ -110,7 +110,7 @@ export default {
 }
 
 .header h1 {
-  border: 2px solid white;
+  border: 2px solid var(--white);
   border-radius: 5px;
   padding: 1rem;
   z-index: 2;

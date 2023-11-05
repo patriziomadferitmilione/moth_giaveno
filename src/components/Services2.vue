@@ -1,5 +1,6 @@
 <template>
   <!-- Services Accordion -->
+  <div class="container"></div>
   <w-accordion
     class="accordion"
     :items="services"
@@ -69,7 +70,7 @@ export default {
   name: 'ServicesDisplay',
   setup() {
     const services = ref([])
-    const expandedStates = ref([true, true, true, true, true, true])
+    const expandedStates = ref([true, false, false, false, false, false])
     const showModal = ref(false)
     const modalContent = ref('')
     const modalItem = ref({})
@@ -131,6 +132,17 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  background-image: url('../public/images/logo_beige.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0.249;
+}
+
 p {
   text-align: justify;
   padding: 1rem;
@@ -139,18 +151,27 @@ p {
 
 .accordion {
   padding: 1rem;
-  width: 100%;
-  padding-bottom: 3rem;
-  background-color: var(--white);
+  width: 100vw !important;
+  background: transparent !important;
+  width: fit-content;
+  box-shadow: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .acc_title {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  padding: 1rem;
+  flex-direction: column;
+  background-color: var(--shadow3);
+  background-color: transparent !important;
   border-radius: 5px;
+  width: 100vw;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .acc_item {
@@ -158,65 +179,87 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 70vh;
   height: fit-content;
   padding: 1rem;
   border-radius: 5px;
   position: relative;
   padding: 0;
+  background-color: transparent !important;
 }
 
 .img_content_wrapper {
   position: relative;
-  width: 70%;
-  margin: auto;
+  display: flex;
+  justify-items: center;
+  align-items: center;
 }
 
 .content_overlay {
+  height: 60%;
+  width: 75%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #fff;
+  color: #212121;
+  line-height: 1.2;
+  letter-spacing: 0.11rem;
   text-align: center;
   z-index: 3;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 10px;
+  background-color: rgba(195, 147, 76, 0.85) !important;
   border-radius: 5px;
 }
 
 .acc_item img {
   border-radius: 5px;
-  width: 100%;
+  width: 60vw;
   height: auto;
-  z-index: 1;
+  z-index: 2;
 }
 
 .acc_item p {
-  font-size: 30px;
-  text-align: justify;
+  font-size: 23px;
+  height: 45%;
+  padding: 1rem 2.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   border-radius: 5px;
   z-index: 2;
-  background-color: rgba(255, 255, 255, 0.5);
   margin-top: 1rem;
+}
+
+.acc_title span {
+  background-color: var(--shadow3) !important;
+  background-color: transparent !important;
+  margin: 10px auto;
+  color: var(--shadow2) !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 ul {
   list-style-type: none;
-  background-color: rgba(255, 255, 255, 0.7);
+  width: 60vw;
   padding: 1rem;
-  margin-top: 1rem;
   border-radius: 10px;
   text-align: center;
+  background-color: rgba(255, 252, 242, 0.85) !important;
 }
 
 ul li {
   margin: 10px 0;
+  padding: 0 2rem;
   font-size: 20px;
+  line-height: 1.3;
   border-radius: 5px;
   transform: translateX(-100%);
   opacity: 0;
   transition: transform 0.5s, background-color 0.3s, box-shadow 0.3s,
     opacity 0.5s;
+  background-color: transparent !important;
 }
 
 ul li {
@@ -288,69 +331,53 @@ ul li:nth-child(14) {
 }
 
 @media (max-width: 480px) {
-  .container {
-    padding-bottom: 3rem;
-  }
-
   .accordion {
-    padding: 0.5rem;
     width: 95%;
-    box-shadow: none;
-  }
-
-  .acc_title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90vw;
-    padding: 1rem;
-    border-radius: 5px;
+    padding: 0.5rem;
   }
 
   .acc_item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    background-image: url('/images/3.png');
+    background-size: auto;
+    padding: 0;
+    height: fit-content !important;
+    width: 100vw;
+  }
+
+  .img_content_wrapper {
     height: fit-content;
-    width: 90vw !important;
-    padding: 1rem;
-    border-radius: 5px;
+    background-image: url('/images/3.png');
+    width: 100%;
+    height: 100vh;
+  }
+
+  .content_overlay {
+    height: fit-content !important;
+    width: 90%;
   }
 
   .acc_item img {
-    max-width: 90%;
+    width: 80vw;
+    display: none;
   }
 
   .acc_item p {
     font-size: 20px;
-    line-height: 1.4;
-    padding: 0.5rem;
-    margin: 0;
-    max-height: 40vh;
-    overflow: scroll;
-    margin-top: 1rem;
-    width: 80vw; /* Adjusting width for mobile devices to ensure text doesn't overflow */
-    overflow: auto;
   }
 
-  .w-accordion__item-title .acc_title span,
-  .w-accordion__item-title .acc_title {
-    color: rgb(33, 33, 33);
-    background-color: var(--white);
-    text-align: center;
-    padding: 0.5rem;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 30px;
-    width: 90vw;
+  .acc_title span {
+    padding: 0;
   }
-  .w-accordion__item-title .acc_title span {
-    width: 80vw !important;
-    height: 10vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+  ul {
+    width: 100%;
+    padding: 2rem 0;
+  }
+
+  ul li {
+    font-size: 15px;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
   }
 }
 

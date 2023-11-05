@@ -250,7 +250,7 @@ p {
 }
 
 .header h1 {
-  border: 2px solid white;
+  border: 2px solid var(--white);
   border-radius: 5px;
   padding: 1rem;
   z-index: 2;
@@ -269,7 +269,7 @@ p {
   z-index: 1000;
 }
 .modal {
-  background: white;
+  background: var(--white);
   padding: 20px;
   border-radius: 8px;
   position: relative;

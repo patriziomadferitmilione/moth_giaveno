@@ -1,7 +1,4 @@
 <template>
-  <div class="header">
-    <h1>Chitarre</h1>
-  </div>
   <el-tabs
     type="border-card"
     class="tabs"
@@ -101,43 +98,6 @@ export default {
 }
 </script>
 <style scoped>
-.header {
-  width: 100vw;
-  height: 100vh;
-  margin-bottom: 4rem;
-  font-size: 60px;
-  text-align: center;
-  background: url('/images/6.jpg') no-repeat center center / cover;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 6rem;
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5), 0 10px 6px rgba(0, 0, 0, 0.16);
-  position: relative;
-  z-index: 1;
-}
-
-.header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: -1;
-}
-
-.header h1 {
-  border: 2px solid var(--link);
-  border-radius: 5px;
-  color: var(--link);
-  padding: 1rem;
-  z-index: 2;
-}
-
-.tab_content,
 .tabs {
   display: flex;
   justify-content: center;
@@ -154,19 +114,8 @@ export default {
 
 :deep .el-tabs__header.el-tabs__header {
   margin: 0 !important;
-  padding: 1rem;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
-    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
-    0 8px 16px rgba(0, 0, 0, 0.11);
+  height: 10vh;
   width: 100%;
-}
-
-:deep .el-tabs__nav {
-  background: var(--white);
-}
-
-:deep .el-tabs__item {
-  color: #212121;
 }
 
 p {
@@ -185,9 +134,8 @@ p {
 }
 
 .guitar_card {
-  width: 90vw;
+  width: 80vw;
   height: fit-content;
-  border: 1px solid #ccc;
   border-radius: 8px;
   padding: 2rem;
   display: flex;
@@ -196,21 +144,12 @@ p {
   justify-content: space-between;
   text-align: center;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) inset;
-  transition: box-shadow 0.3s ease;
   margin-bottom: 1rem;
 }
 
 .guitar_card h3 {
   font-size: 35px;
   color: #212121;
-}
-
-.guitar_card:hover {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
-    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
-    0 8px 16px rgba(0, 0, 0, 0.11) inset;
-  transition: box-shadow 0.3s ease;
 }
 
 .guitar_card-img {
@@ -220,21 +159,16 @@ p {
   margin-bottom: 2rem;
 }
 
-/* Style the active tab */
 :deep(.el-tabs__item.is-active) {
   background-color: var(--white) !important;
   color: var(--link) !important;
 }
 
-/* Style all the tabs */
 :deep(.el-tabs__item) {
-  background-color: #212121;
   color: black;
 }
 
-/* Style hover effect */
 :deep(.el-tabs__item:hover) {
-  background-color: lightgrey !important;
-  color: var(--link) !important;
+  color: black !important;
 }
 </style>

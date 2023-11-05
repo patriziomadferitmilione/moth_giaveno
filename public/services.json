@@ -7,7 +7,7 @@
     "background_color": "#fff",
     "title_text_color": "#212121",
     "title_background_color": "#fff",
-    "image_path": "images/1.png",
+    "image_path": "images/3.jpg",
     "icon": "fa fa-cogs"
   },
   {
@@ -28,7 +28,7 @@
     "background_color": "#fff",
     "title_text_color": "#212121",
     "title_background_color": "#fff",
-    "image_path": "images/2.png",
+    "image_path": "images/3.png",
     "icon": "fa fa-paint-brush"
   },
   {

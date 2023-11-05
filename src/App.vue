@@ -9,7 +9,10 @@ import Navbar from './components/Navbar.vue'
 
 <style scoped>
 template {
-  background-color: var(--white);
+  background-image: url('/images/logo_beige.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 .logo {
