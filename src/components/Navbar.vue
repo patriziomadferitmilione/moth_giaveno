@@ -86,6 +86,7 @@ export default {
     return {
       activeIndex: '1',
       ellipsis: false,
+      resizeTimer: null,
     }
   },
   methods: {
@@ -93,15 +94,22 @@ export default {
       console.log(key, keyPath)
     },
     updateEllipsis() {
+      console.log('Update Ellipsis Triggered')
       clearTimeout(this.resizeTimer)
       this.resizeTimer = setTimeout(() => {
         this.ellipsis = window.innerWidth <= 480
+        console.log('Ellipsis value:', this.ellipsis)
       }, 250)
     },
   },
   mounted() {
     this.ellipsis = window.innerWidth <= 480
     window.addEventListener('resize', this.updateEllipsis)
+  },
+  watch: {
+    ellipsis(newVal) {
+      console.log('Ellipsis changed to:', newVal)
+    },
   },
 }
 </script>
