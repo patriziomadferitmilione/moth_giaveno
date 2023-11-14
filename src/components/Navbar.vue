@@ -1,83 +1,37 @@
 <template>
-  <el-menu
-    :default-active="activeIndex"
-    class="el-menu"
-    mode="horizontal"
-    active-text-color="#c3934c"
-    @select="handleSelect"
-  >
-    <!-- This flex-grow is only necessary if ellipsis is true for smaller screens -->
-    <div v-if="ellipsis" class="flex-grow"></div>
-
+  <w-toolbar class="navbar" fixed shadow height="8vh">
+    <!-- Logo -->
     <router-link to="/">
-      <el-menu-item class="logo" index="0">
-        <img src="/images/logo_beige.png" alt="logo" />
-      </el-menu-item>
+      <img class="logo" src="/images/logo_beige.png" alt="logo" />
     </router-link>
 
-    <!-- This flex-grow is to center the logo when ellipsis is not shown -->
-    <div v-if="!ellipsis" class="flex-grow"></div>
+    <div class="spacer"></div>
 
-    <!-- Ellipsis menu for smaller screens -->
-    <el-sub-menu v-if="ellipsis" index="10">
-      <template #title>
-        <span>...</span>
-      </template>
-      <router-link to="/about">
-        <el-menu-item index="1">About</el-menu-item>
-      </router-link>
-      <el-sub-menu index="2">
-        <template #title>Instruments</template>
-        <router-link to="/guitars">
-          <el-menu-item index="2-1">Guitars</el-menu-item>
-        </router-link>
-        <router-link to="/guitars2">
-          <el-menu-item index="2-1">Guitars</el-menu-item>
-        </router-link>
-        <router-link to="/bass">
-          <el-menu-item index="2-2">Bass</el-menu-item>
-        </router-link>
-      </el-sub-menu>
-      <router-link to="/services">
-        <el-menu-item index="3">Services</el-menu-item>
-      </router-link>
-      <router-link to="/services2">
-        <el-menu-item index="3">Services2</el-menu-item>
-      </router-link>
-      <router-link to="/contacts">
-        <el-menu-item index="4">Contacts</el-menu-item>
-      </router-link>
-      <el-menu-item index="5">Configuratore</el-menu-item>
-    </el-sub-menu>
+    <!-- Main navigation links -->
+    <router-link class="r_link" to="/about" active-class="active-link">
+      <span class="navbar_titles">About</span>
+    </router-link>
 
-    <!-- Normal links for larger screens -->
-    <template v-if="!ellipsis">
-      <router-link to="/about">
-        <el-menu-item index="1">About</el-menu-item>
-      </router-link>
-      <el-sub-menu index="2">
-        <template #title>Instruments</template>
-        <router-link to="/guitars">
-          <el-menu-item index="2-1">Guitars</el-menu-item>
-        </router-link>
-        <router-link to="/guitars2">
-          <el-menu-item index="2-1">Guitars</el-menu-item>
-        </router-link>
-        <router-link to="/bass">
-          <el-menu-item index="2-2">Bass</el-menu-item>
-        </router-link>
-      </el-sub-menu>
-      <router-link to="/services">
-        <el-menu-item index="3">Services</el-menu-item>
-      </router-link>
-      <router-link to="/services2">
-        <el-menu-item index="3">Services2</el-menu-item>
-      </router-link>
-      <router-link to="/contacts">
-        <el-menu-item index="4">Contacts</el-menu-item>
-      </router-link>
-    </template>
-  </el-menu>
+    <!-- Dropdown for Instruments -->
+    <div class="dropdown">
+      <span class="navbar_titles dropdown-toggle">Instruments</span>
+      <div class="dropdown-menu">
+        <router-link class="dropdown-item" to="/guitars">Guitars</router-link>
+        <router-link class="dropdown-item" to="/bass">Bass</router-link>
+      </div>
+    </div>
+
+    <!-- Other Links -->
+    <router-link class="r_link" to="/services2">
+      <span class="navbar_titles">Services</span>
+    </router-link>
+    <router-link class="r_link" to="/contacts">
+      <span class="navbar_titles">Contacts</span>
+    </router-link>
+
+    <!-- Configuratore -->
+    <span class="navbar_titles">Configuratore</span>
+  </w-toolbar>
 </template>
 
 <script>
@@ -115,65 +69,53 @@ export default {
 </script>
 
 <style scoped>
-#navbar {
+.navbar {
   border: none;
+  background-color: var(--white);
 }
 
-.el-menu {
-  position: sticky;
-  top: 0;
-  z-index: 100;
+a,
+span {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  margin-right: 1rem;
+  cursor: pointer;
 }
 
-.flex-grow {
-  flex-grow: 1;
-}
-
-img {
-  max-height: 100%;
-}
-
-/*
-.el-menu {
-}
-
-.el-menu--horizontal {
-}
-
-#navbar {
-}
-
-.flex-grow {
-}
-
-.el-menu-item {
+a:hover {
+  color: var(--link);
 }
 
 .logo {
+  max-height: 8vh;
 }
 
-img {
+.dropdown {
+  position: relative;
+  display: inline-block;
 }
 
-.el-sub-menu {
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: var(--white);
+  z-index: 1;
+  border-radius: 5px;
 }
 
-.el-sub-menu__hide-arrow {
+.dropdown:hover .dropdown-menu {
+  display: block;
 }
 
-.el-sub-menu__title {
+.dropdown-item {
+  color: black;
+  text-decoration: none;
+  display: block;
+  padding: 1rem;
 }
 
-.el-tooltip__trigger {
+.dropdown-item:hover {
+  background-color: var(--white);
 }
-
-.el-icon {
-}
-
-.el-sub-menu__icon-more {
-}
-
-.el-sub-menu__icon-arrow {
-  
-} */
 </style>
