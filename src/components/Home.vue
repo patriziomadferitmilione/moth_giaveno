@@ -3,6 +3,16 @@
     <div class="page-header">
       <img :src="currentImage" alt="Header Image" class="header-image" />
       <h1 class="header-title">Moth Lutherie</h1>
+
+      <div class="nav-dots">
+        <span
+          v-for="(image, index) in images"
+          :key="index"
+          class="dot"
+          :class="{ active: currentImageIndex === index }"
+          @click="setCurrentImageIndex(index)"
+        ></span>
+      </div>
     </div>
 
     <div class="other-section">
@@ -16,11 +26,7 @@ export default {
   data() {
     return {
       currentImageIndex: 0,
-      images: [
-        '/images/3.jpg', // Replace with your image paths
-        '/images/4.jpg',
-        '/images/6.jpg',
-      ],
+      images: ['/images/3.jpg', '/images/4.jpg', '/images/6.jpg'],
     }
   },
   computed: {
@@ -28,10 +34,16 @@ export default {
       return this.images[this.currentImageIndex]
     },
   },
-  mounted() {
-    setInterval(() => {
+  methods: {
+    setCurrentImageIndex(index) {
+      this.currentImageIndex = index
+    },
+    nextImage() {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length
-    }, 3000) // Change image every 3000 milliseconds (3 seconds)
+    },
+  },
+  mounted() {
+    setInterval(this.nextImage, 3000) // Continue changing image every 3 seconds
   },
 }
 </script>
@@ -65,5 +77,27 @@ export default {
 
 .other-section {
   height: 200vh;
+}
+
+.nav-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  margin: 0 5px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dot.active {
+  background-color: #717171;
 }
 </style>

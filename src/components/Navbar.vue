@@ -86,32 +86,34 @@ export default {
   border: none !important;
   background-color: transparent !important;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row; /* Always use row direction */
+  align-items: center; /* Center items vertically */
   transition: height 0.8s ease;
+  height: 8vh; /* Set a default height */
 }
 
 .navbar.sticky {
   position: fixed;
-  color: #212121;
   top: 0;
   width: 100%;
   z-index: 1000;
   background-color: var(--white) !important;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  flex-direction: row;
-  justify-content: start;
 }
 
 .logo-container {
-  text-align: center; /* Center the logo */
+  margin-right: 1rem; /* Add some space after the logo */
+}
+
+.logo {
+  max-height: 8vh;
 }
 
 .nav-links a,
 .nav-links span {
-  color: var(--white); /* Default color for non-sticky state */
+  text-decoration: none;
+  color: var(--white); /* Default color */
 }
 
 .sticky-links a,
