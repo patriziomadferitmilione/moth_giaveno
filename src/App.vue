@@ -4,35 +4,15 @@ import Navbar from './components/Navbar.vue'
 
 <template>
   <Navbar id="navbar" />
-  <router-view id="tabs" />
+  <router-view id="view" />
 </template>
 
 <style scoped>
-template {
-  background-image: url('/images/logo_beige.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-
 #navbar {
   width: 100%;
 }
 
-#tabs {
+#view {
   width: 100%;
 }
 </style>
