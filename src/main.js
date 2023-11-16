@@ -18,6 +18,7 @@ import TabsGuitars2 from './components/TabsGuitars2.vue'
 import TabsBass from './components/TabsBass.vue'
 import Services from './components/Services.vue'
 import Services2 from './components/Services2.vue'
+import Stock from './components/Stock.vue'
 import Contacts from './components/Contacts.vue'
 
 const routes = [
@@ -28,6 +29,7 @@ const routes = [
   { path: '/bass', component: TabsBass },
   { path: '/services', component: Services },
   { path: '/services2', component: Services2 },
+  { path: '/stock', component: Stock },
   { path: '/contacts', component: Contacts },
 ]
 

@@ -4,21 +4,9 @@ import Footer from './components/Footer.vue'
 </script>
 
 <template>
-  <Navbar id="navbar" />
-  <router-view id="view" />
-  <Footer id="footer" />
+  <Navbar />
+  <router-view />
+  <Footer />
 </template>
 
-<style scoped>
-#navbar {
-  width: 100%;
-}
-
-#view {
-  width: 100%;
-}
-
-#footer {
-  width: 100%;
-}
-</style>
+<style scoped></style>

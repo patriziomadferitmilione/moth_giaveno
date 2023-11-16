@@ -166,29 +166,11 @@ export default {
   width: 100vw;
 }
 
-:deep .el-tabs__header.el-tabs__header {
-  margin: 0 !important;
-  width: 100%;
-}
-
 p {
   text-align: justify;
   padding: 1rem;
   font-size: 20px;
   color: #212121;
-}
-
-:deep(.el-tabs__item.is-active) {
-  background-color: var(--white) !important;
-  color: var(--shadow2) !important;
-}
-
-:deep(.el-tabs__item) {
-  color: black;
-}
-
-:deep(.el-tabs__item:hover) {
-  color: black !important;
 }
 
 .accordion {

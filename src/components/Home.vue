@@ -14,10 +14,6 @@
         ></span>
       </div>
     </div>
-
-    <div class="other-section">
-      <h1>Home Page</h1>
-    </div>
     <Testimonials />
   </div>
 </template>
@@ -79,10 +75,6 @@ export default {
   color: white;
   font-size: 3rem;
   z-index: 1;
-}
-
-.other-section {
-  height: 200vh;
 }
 
 .nav-dots {

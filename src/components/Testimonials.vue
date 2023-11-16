@@ -2,44 +2,63 @@
   <div class="testimonials-container">
     <div class="testimonial-cards">
       <div
-        v-for="(testimonial, index) in testimonials"
-        :key="testimonial.name"
-        class="testimonial-card"
-        :class="{ 'is-hidden': index < currentSlide }"
-        :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
+        v-for="(group, groupIndex) in testimonialGroups"
+        :key="'group-' + groupIndex"
+        class="testimonial-group"
+        :class="{ active: isGroupActive(groupIndex) }"
       >
-        <h2>{{ testimonial.title }}</h2>
-        <p>{{ testimonial.text }}</p>
-        <div class="testimonial-footer">
-          <img
-            :src="testimonial.image_path"
-            :alt="testimonial.name"
-            class="testimonial-image"
-          />
-          <div>
-            <h3>{{ testimonial.name }}</h3>
-            <p>{{ testimonial.position }}</p>
-          </div>
+        <div
+          v-for="(testimonial, index) in group"
+          :key="'testimonial-' + groupIndex + '-' + index"
+          class="testimonial-card"
+        >
+          <!-- Testimonial content goes here -->
         </div>
       </div>
     </div>
+    <div class="testimonial-navigation">
+      <span
+        v-for="(dot, index) in testimonialGroups"
+        :key="'dot-' + index"
+        class="navigation-dot"
+        :class="{ active: isDotActive(index) }"
+        @click="navigateToGroup(index)"
+      ></span>
+    </div>
   </div>
 </template>
-
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed, nextTick, onBeforeUnmount } from 'vue'
 
 export default {
   setup() {
     const testimonials = ref([])
     const currentSlide = ref(0)
-    const testimonialsPerPage = 3
+    const clonedGroups = 1 // Cloning only one group of testimonials at each end
 
+    // Compute groups of testimonials
+    const testimonialGroups = computed(() => {
+      let groups = []
+      if (testimonials.value.length) {
+        for (let i = 0; i < testimonials.value.length; i += 3) {
+          groups.push(testimonials.value.slice(i, i + 3))
+        }
+        // Cloning groups for a seamless looping effect
+        const clonesAtStart = groups.slice(-clonedGroups)
+        const clonesAtEnd = groups.slice(0, clonedGroups)
+        return clonesAtStart.concat(groups, clonesAtEnd)
+      }
+      return []
+    })
+
+    // Fetch testimonials from a JSON file
     async function fetchTestimonials() {
       try {
         const response = await fetch('/testimonials.json')
         if (response.ok) {
-          testimonials.value = await response.json()
+          const originalTestimonials = await response.json()
+          testimonials.value = originalTestimonials
+          currentSlide.value = clonedGroups * 3
         } else {
           console.error('Failed to fetch testimonials.json')
         }
@@ -48,23 +67,69 @@ export default {
       }
     }
 
+    // Check if a group of testimonials is currently active
+    const isGroupActive = (groupIndex) => {
+      const totalGroups = testimonialGroups.value.length - 2 * clonedGroups
+      const normalizedIndex =
+        (currentSlide.value / 3 + totalGroups) % totalGroups
+      return groupIndex === normalizedIndex
+    }
+
+    // Navigate to a specific group of testimonials
+    const navigateToGroup = (groupIndex) => {
+      currentSlide.value = groupIndex * 3 + clonedGroups * 3
+      // Reset the interval for automatic sliding
+      startSliding()
+    }
+
+    // Automatic sliding logic
+    const startSliding = () => {
+      setInterval(() => {
+        let newSlide = currentSlide.value + 3
+        if (newSlide >= testimonials.value.length - clonedGroups * 3) {
+          newSlide = clonedGroups * 3
+        }
+        currentSlide.value = newSlide
+      }, 5000)
+    }
+
+    // Compute the offset for the sliding effect
+    const slideOffset = computed(() => {
+      const offset = (currentSlide.value / 3 - clonedGroups) * 100
+      return `-${offset}%`
+    })
+
+    // Setup function to initialize testimonials and start automatic sliding
     onMounted(async () => {
       await fetchTestimonials()
-      setInterval(() => {
-        if (
-          currentSlide.value <
-          testimonials.value.length - testimonialsPerPage
-        ) {
-          currentSlide.value++
-        } else {
-          currentSlide.value = 0
+      startSliding()
+    })
+
+    // Cleanup before the component is unmounted
+    onBeforeUnmount(() => {
+      clearInterval(slideInterval)
+    })
+
+    // Watch for changes in the current slide and adjust the CSS accordingly
+    watch(currentSlide, () => {
+      nextTick(() => {
+        const testimonialCards = document.querySelector('.testimonial-cards')
+        if (testimonialCards) {
+          if (currentSlide.value !== clonedGroups * 3) {
+            testimonialCards.style.transition = 'transform 0.5s ease'
+          }
+          testimonialCards.style.transform = `translateX(${slideOffset.value})`
         }
-      }, 5000)
+      })
     })
 
     return {
       testimonials,
       currentSlide,
+      testimonialGroups,
+      navigateToGroup,
+      isGroupActive,
+      slideOffset,
     }
   },
 }
@@ -73,25 +138,32 @@ export default {
 <style scoped>
 .testimonials-container {
   overflow: hidden;
-  width: 100%; /* Ensure the container takes up the full width */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem 0;
 }
 
 .testimonial-cards {
   display: flex;
-  transition: transform 0.5s ease-out; /* Smooth out the transition effect */
-  will-change: transform; /* Optimizes the animation */
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  transform-origin: center center;
 }
 
 .testimonial-card {
-  flex: 0 0 calc(100% / 3); /* Each card takes up exactly 1/3 of the container width */
-  color: #212121;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  margin-right: 0.5rem; /* Add space between cards if needed */
-  display: flex; /* Ensure content within cards is properly aligned */
-  flex-direction: column; /* Stack card content vertically */
-  justify-content: center; /* Center content vertically within each card */
-  align-items: center; /* Center content horizontally */
+  flex: 0 0 calc(33.33% - 1rem);
+  background-color: var(--white);
+  margin: 0.5rem;
+  padding: 2rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 1.5s ease;
 }
 
 .testimonial-footer {
@@ -101,10 +173,71 @@ export default {
 }
 
 .testimonial-image {
-  width: 80px; /* Adjust size as needed */
-  height: 80px; /* Adjust size as needed */
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  margin-right: 15px;
-  object-fit: cover; /* Ensure images don't get distorted */
+  margin-right: 1rem;
+  object-fit: cover;
+}
+
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+h3 {
+  color: #555;
+  font-size: 1rem;
+}
+
+p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.testimonial-navigation {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.navigation-dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background-color: #ddd;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.navigation-dot.active {
+  background-color: #333;
+}
+
+.testimonial-bubble {
+  position: relative;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.testimonial-quote::before {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background: var(--white);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 </style>

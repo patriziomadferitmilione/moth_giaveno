@@ -37,6 +37,9 @@
       <router-link class="r_link" to="/services2">
         <span class="navbar_titles">Services</span>
       </router-link>
+      <router-link class="r_link" to="/stock">
+        <span class="navbar_titles">Stock</span>
+      </router-link>
       <router-link class="r_link" to="/contacts">
         <span class="navbar_titles">Contacts</span>
       </router-link>

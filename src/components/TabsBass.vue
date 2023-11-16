@@ -137,23 +137,6 @@ export default {
   padding-top: 1rem;
 }
 
-:deep .el-tabs__header.el-tabs__header {
-  margin: 0 !important;
-  padding: 1rem;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
-    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
-    0 8px 16px rgba(0, 0, 0, 0.11);
-  width: 100%;
-}
-
-:deep .el-tabs__nav {
-  background: var(--white);
-}
-
-:deep .el-tabs__item {
-  color: #212121;
-}
-
 p {
   text-align: justify;
   padding: 1rem;
