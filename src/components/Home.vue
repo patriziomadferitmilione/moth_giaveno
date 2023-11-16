@@ -18,11 +18,17 @@
     <div class="other-section">
       <h1>Home Page</h1>
     </div>
+    <Testimonials />
   </div>
 </template>
 
 <script>
+import Testimonials from './Testimonials.vue'
+
 export default {
+  components() {
+    Testimonials
+  },
   data() {
     return {
       currentImageIndex: 0,
@@ -43,7 +49,7 @@ export default {
     },
   },
   mounted() {
-    setInterval(this.nextImage, 3000) // Continue changing image every 3 seconds
+    setInterval(this.nextImage, 3000)
   },
 }
 </script>
@@ -71,8 +77,8 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
-  font-size: 3rem; /* Adjust size as needed */
-  z-index: 1; /* Ensure the title is above the image */
+  font-size: 3rem;
+  z-index: 1;
 }
 
 .other-section {
