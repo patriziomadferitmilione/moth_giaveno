@@ -1,99 +1,58 @@
 <template>
-  <div class="container">
+  <div>
     <!-- Services Header -->
-    <div class="header">
+    <div class="page-header">
       <h1>Servizi</h1>
     </div>
 
-    <!-- Services Accordion -->
-    <w-accordion
-      class="accordion"
-      :items="services"
-      item-content-key="content"
-      item-title-key="title"
-      :model-value="expandedStates"
-      @input="updateExpandedStates"
-      @focus="handleFocus"
-      :expand-icon="false"
-      shadow
-      duration="650"
-    >
-      <!-- Custom content for all items -->
-      <template #item-content="{ item, index, expanded }">
-        <div
-          class="acc_item"
-          :class="{ 'is-expanded': expanded }"
-          :style="{
-            color: item.text_color,
-            backgroundColor: item.background_color,
-          }"
-        >
-          <img
-            v-if="item.image_path"
-            :src="item.image_path"
-            alt="Content Image"
-          />
-          <p>{{ item.content }}</p>
+    <!-- Content Rows -->
+    <div>
+      <div
+        class="content-row"
+        v-for="(service, index) in services"
+        :key="index"
+      >
+        <!-- Main Row for Title, Content, and Image -->
+        <div class="main-row">
+          <div class="image" :class="{ 'image-left': index % 2 === 0 }">
+            <!-- Add your image here -->
+            <img :src="service.image_path" alt="Image" />
+          </div>
+          <div class="text">
+            <!-- Populate content from the data -->
+            <h2
+              :style="{
+                color: service.title_text_color,
+                background: service.title_background_color,
+              }"
+            >
+              {{ service.title }}
+            </h2>
+            <p
+              :style="{
+                color: service.text_color,
+                background: service.background_color,
+              }"
+            >
+              {{ service.content }}
+            </p>
+          </div>
         </div>
-      </template>
 
-      <!-- Custom title for all items -->
-      <template #item-title="{ item, index, expanded }">
-        <div class="acc_title">
-          <span
-            :class="{ 'is-expanded': expanded }"
+        <!-- List Row -->
+        <div class="list-row">
+          <ul
+            v-if="service.list"
             :style="{
-              color: item.title_text_color,
-              backgroundColor: item.title_background_color,
-              textAlign: 'center',
-              padding: '1rem',
-              borderRadius: '5px',
-              boxShadow:
-                '0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.23)',
-              fontWeight: 'bold',
-              fontSize: '30px',
-              width: '40vw',
+              color: service.text_color,
+              background: service.background_color,
             }"
           >
-            {{ item.title }}
-          </span>
-        </div>
-      </template>
-    </w-accordion>
-
-    <!-- Services Cards -->
-    <div class="service-card-grid">
-      <div
-        class="service-card"
-        v-for="(item, index) in services"
-        :key="index"
-        @click="handleCardClick(item)"
-      >
-        <!-- <img
-          v-if="item.image_path"
-          :src="item.image_path"
-          alt="Content Image"
-          class="service-card-img"
-        /> -->
-        <w-icon class="mr1" size="17em" color="black"> {{ item.icon }} </w-icon>
-        <h3>{{ item.title }}</h3>
-      </div>
-
-      <!-- Modal -->
-      <div v-if="showModal" class="modal-overlay" @click="closeModal">
-        <div class="modal" @click.stop>
-          <button @click="closeModal" class="modal-close">X</button>
-          <div class="modal-content">
-            <img
-              v-if="modalItem.image_path"
-              :src="modalItem.image_path"
-              alt="Content Image"
-            />
-            <div class="modal_right">
-              <h2>{{ modalItem.title }}</h2>
-              <p>{{ modalItem.content }}</p>
-            </div>
-          </div>
+            <!-- Split and create list items if service.list is defined -->
+            <li v-for="(item, i) in service.list.split('|')" :key="'list-' + i">
+              {{ item }}
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -101,405 +60,111 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-
 export default {
-  name: 'ServicesDisplay',
-  setup() {
-    const services = ref([])
-    const expandedStates = ref([false, false])
-    const showModal = ref(false)
-    const modalContent = ref('')
-    const modalItem = ref({})
-
-    // Fetching JSON data when component is mounted
-    onMounted(async () => {
-      const res = await fetch('/services.json')
-      const data = await res.json()
-
-      // Update the content of each service to include a new line after every dot
-      for (let service of data) {
-        service.content = service.content.replace(/\. /g, '.\n')
-      }
-
-      services.value = data
-    })
-
-    const extraAction1 = () => {
-      console.log('Extra action for the first item performed.')
-    }
-
-    const updateExpandedStates = (newState) => {
-      if (newState.length !== expandedStates.value.length) {
-        expandedStates.value = Array(services.value.length).fill(false)
-      }
-      expandedStates.value = newState
-    }
-
-    const handleFocus = (focusedItem) => {
-      // console.log('Focused item:', focusedItem)
-    }
-
-    const handleCardClick = (item) => {
-      showModal.value = true
-      modalItem.value = item
-    }
-
-    const closeModal = () => {
-      showModal.value = false
-    }
-
+  data() {
     return {
-      services,
-      expandedStates,
-      extraAction1,
-      updateExpandedStates,
-      handleFocus,
-      showModal,
-      modalContent,
-      handleCardClick,
-      closeModal,
-      modalItem,
+      services: [], // Initialize an empty array for services data
+      isLoading: true, // Add a loading indicator flag
     }
+  },
+  methods: {
+    async fetchServices() {
+      try {
+        const response = await fetch('/services.json') // Adjust the path to your JSON file
+        if (!response.ok) throw new Error('Failed to fetch services data')
+        this.services = await response.json()
+        this.isLoading = false // Set isLoading to false when data is loaded
+      } catch (error) {
+        console.error('An error occurred while fetching services data:', error)
+      }
+    },
+  },
+  mounted() {
+    this.fetchServices() // Call the function when the component is mounted
   },
 }
 </script>
 
 <style scoped>
-.container {
-  background-color: var(--white);
-  min-height: 95vh;
+.page-header {
+  height: 40vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  background: url(/images/8.jpg);
+}
+
+.page-header h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.45) inset;
-  padding-bottom: 3rem;
+  text-align: center;
+  font-size: 40px;
+  height: 100%;
 }
 
-p {
-  text-align: justify;
-  padding: 1rem;
-  font-size: 20px;
-}
-
-.accordion {
-  padding: 1rem;
-  border-radius: 5px;
-  width: 90%;
-}
-
-.acc_title {
+.content-row {
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* Change to column layout */
   align-items: center;
-  width: 100%;
-  padding: 1rem;
-  border-radius: 5px;
+  margin-bottom: 2rem;
 }
 
-.acc_item {
+/* Style for the main row containing title, content, and image */
+.main-row {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  height: fit-content;
-  padding: 1rem;
-  border-radius: 5px;
-}
-
-.acc_item img {
-  max-width: 50%;
-  border-radius: 5px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
-    0 6px 6px rgba(0, 0, 0, 0.23) inset;
-}
-
-.acc_item p {
-  font-size: 20px;
-  padding: 2rem;
-  text-align: justify;
-}
-
-.header {
-  width: 100vw;
-  height: 100vh;
-  margin-bottom: 4rem;
-  font-size: 60px;
-  text-align: center;
-  background: url('/images/6.jpg') no-repeat center center / cover;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 6rem;
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5), 0 10px 6px rgba(0, 0, 0, 0.16);
-  position: relative;
-  z-index: 1;
-}
-
-.header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: -1;
-}
-
-.header h1 {
-  border: 2px solid var(--white);
-  border-radius: 5px;
-  padding: 1rem;
-  z-index: 2;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-.modal {
-  background: var(--white);
-  padding: 20px;
-  border-radius: 8px;
-  position: relative;
-}
-
-.modal-close {
-  position: absolute;
-  top: 3%;
-  right: 1%;
-  cursor: pointer;
-  font-size: 20px;
-  color: var(--red);
-  background-color: transparent;
-  border: 2px solid var(--red);
-  padding: 0.3rem;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.modal-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #212121;
   padding: 1rem;
+}
+
+.image {
+  flex: 1;
+  padding: 1rem;
+  border: 3px solid var(--link);
+  background-color: var(--white);
   text-align: center;
 }
 
-.modal-content img {
-  max-width: 40%;
-  margin-right: 1rem;
-  border-radius: 5px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+.image img {
+  max-width: 100%;
 }
 
-.modal-content p {
-  margin-top: 1rem;
+.image-left {
+  order: 1;
 }
 
-.service-card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 3rem;
-}
-
-.service-card {
-  width: 30vw;
-  height: 70vh;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.text {
+  flex: 1;
   padding: 1rem;
+  background-color: var(--white);
+  border: 3px solid var(--link);
+}
+
+.text h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.text p {
+  font-size: 22px;
+}
+
+/* Style for the list row */
+.list-row {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  padding: 1rem;
 }
 
-.service-card h3 {
-  font-size: 35px;
-  color: #212121;
+ul {
+  list-style-type: disc;
+  margin-left: 20px;
 }
 
-.service-card:hover {
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.3s ease;
-}
-
-.service-card-img {
-  max-width: 100%;
-  height: auto;
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding-bottom: 3rem;
-  }
-  .header h1 {
-    font-size: 40px;
-  }
-  .service-card {
-    width: 80vw;
-    height: fit-content;
-    padding: 1.5rem;
-  }
-
-  .modal {
-    background: var(--white);
-    padding: 0.5rem;
-    border-radius: 5px;
-  }
-
-  .modal-close {
-    display: none;
-  }
-
-  .modal-content {
-    flex-direction: column;
-    width: 80vw;
-    height: fit-content;
-    padding: 0.5rem;
-    overflow: scroll;
-    padding-bottom: 0;
-    z-index: 1000;
-  }
-
-  .modal-content img {
-    max-width: 90%;
-    margin-right: 0;
-    margin-bottom: 3rem;
-  }
-
-  .modal-content p {
-    font-size: 15px;
-    max-height: 40vh;
-    overflow: scroll;
-    line-height: 1.4;
-  }
-
-  .accordion {
-    padding: 0.5rem;
-    width: 95%;
-    box-shadow: none;
-  }
-
-  .acc_title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90vw;
-    padding: 1rem;
-    border-radius: 5px;
-  }
-
-  .acc_item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: fit-content;
-    width: 90vw !important;
-    padding: 1rem;
-    border-radius: 5px;
-  }
-
-  .acc_item img {
-    max-width: 90%;
-  }
-
-  .acc_item p {
-    font-size: 20px;
-    line-height: 1.4;
-    padding: 0.5rem;
-    margin: 0;
-    max-height: 40vh;
-    overflow: scroll;
-    margin-top: 1rem;
-  }
-
-  .w-accordion__item-title .acc_title span,
-  .w-accordion__item-title .acc_title {
-    color: rgb(33, 33, 33);
-    background-color: var(--white);
-    text-align: center;
-    padding: 0.5rem;
-    border-radius: 5px;
-
-    font-weight: bold;
-    font-size: 30px;
-    width: 90vw;
-  }
-  .w-accordion__item-title .acc_title span {
-    width: 80vw !important;
-    height: 10vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .service-card .w-icon {
-    font-size: 10em !important;
-    color: black;
-  }
-
-  .service-card h3 {
-    padding-right: 1rem;
-    padding-left: 1rem;
-    margin-top: 3rem;
-    font-size: 30px;
-  }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-  .container {
-    padding-bottom: 2rem;
-  }
-  .header h1 {
-    font-size: 50px;
-  }
-  .service-card {
-    width: 45vw;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .container {
-    padding-bottom: 2.5rem;
-  }
-  .header h1 {
-    font-size: 55px;
-  }
-  .service-card {
-    width: 30vw;
-  }
-}
-
-@media (min-width: 1025px) {
-  .container {
-    padding-bottom: 3rem;
-  }
-  .header h1 {
-    font-size: 60px;
-  }
-  .service-card {
-    width: 25vw;
-  }
+ul li {
+  font-size: 18px;
 }
 </style>

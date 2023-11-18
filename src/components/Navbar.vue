@@ -34,7 +34,7 @@
       </div>
 
       <!-- Other Links -->
-      <router-link class="r_link" to="/services2">
+      <router-link class="r_link" to="/services">
         <span class="navbar_titles">SERVICES</span>
       </router-link>
       <router-link class="r_link" to="/stock">
