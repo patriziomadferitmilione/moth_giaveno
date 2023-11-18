@@ -26,40 +26,5 @@
     "name": "Daniel West",
     "position": "Group CEO",
     "image_path": "/images/testimonials_1.png"
-  },
-  {
-    "title": "A Wonderful Experience",
-    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
-    "name": "Gloria Tyree",
-    "position": "Analyst",
-    "image_path": "/images/testimonials_2.png"
-  },
-  {
-    "title": "Highly Recommended",
-    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
-    "name": "John Selders",
-    "position": "Consultant",
-    "image_path": "/images/testimonials_1.png"
-  },
-  {
-    "title": "Really Great Outcome",
-    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
-    "name": "Daniel West",
-    "position": "Group CEO",
-    "image_path": "/images/testimonials_1.png"
-  },
-  {
-    "title": "A Wonderful Experience",
-    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
-    "name": "Gloria Tyree",
-    "position": "Analyst",
-    "image_path": "/images/testimonials_2.png"
-  },
-  {
-    "title": "Highly Recommended",
-    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
-    "name": "John Selders",
-    "position": "Consultant",
-    "image_path": "/images/testimonials_1.png"
   }
 ]

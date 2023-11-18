@@ -1,11 +1,14 @@
 <template>
   <div class="testimonials-container">
-    <div class="testimonial-cards">
+    <div
+      class="testimonial-cards"
+      :style="{ transform: `translateX(${translateX}px)` }"
+    >
       <div
         v-for="(testimonial, index) in allTestimonials"
         :key="'testimonial-' + index"
         class="testimonial-card"
-        :class="{ 'is-active': isTestimonialActive(index) }"
+        :style="{ minWidth: cardWidth + 'px', flex: '0 0 ' + cardWidth + 'px' }"
       >
         <div class="testimonial-quote">{{ testimonial.quote }}</div>
         <div class="testimonial-author">{{ testimonial.author }}</div>
@@ -14,11 +17,11 @@
     </div>
     <div class="testimonial-navigation">
       <span
-        v-for="index in navigationDots"
+        v-for="index in visibleGroups"
         :key="'dot-' + index"
         class="navigation-dot"
-        :class="{ active: isDotActive(index) }"
-        @click="navigateToGroup(index)"
+        :class="{ active: isDotActive(index - 1) }"
+        @click="navigateToGroup(index - 1)"
       ></span>
     </div>
   </div>
@@ -28,62 +31,60 @@ import { ref, onMounted, computed, nextTick, onBeforeUnmount, watch } from 'vue'
 
 export default {
   setup() {
-    // Stato iniziale
+    // State
     const testimonials = ref([])
     const currentSlide = ref(0)
-    const slideWidth = ref(0)
+    const cardWidth = ref(0)
+    const clonedGroups = 1 // Number of cloned groups at each end
+    const allTestimonials = ref([])
 
-    // Ottieni i testimonial e imposta il carousel
+    // Fetch testimonials and set up the carousel
     const fetchTestimonials = async () => {
       try {
         const response = await fetch('/testimonials.json')
         if (!response.ok) throw new Error('Failed to fetch testimonials.json')
         testimonials.value = await response.json()
+        allTestimonials.value = computeAllTestimonials()
       } catch (error) {
         console.error('An error occurred:', error)
       }
     }
 
-    // Imposta la larghezza di ogni slide in base alla larghezza del contenitore
-    const setSlideWidth = () => {
+    // Set the card width based on the container's width
+    const setCardWidth = () => {
       const container = document.querySelector('.testimonials-container')
       if (container) {
-        slideWidth.value = container.offsetWidth / 9
+        cardWidth.value = container.offsetWidth * 0.3
       }
     }
 
-    // Testimonial totali, inclusi i cloni per il loop infinito
-    const allTestimonials = computed(() => {
-      const clonesBefore = testimonials.value.slice(-3)
-      const clonesAfter = testimonials.value.slice(0, 3)
-      return clonesBefore.concat(testimonials.value, clonesAfter)
+    // Calculate the slide width based on the card width
+    const slideWidth = computed(() => {
+      return cardWidth.value
     })
-    // Verifica se un testimonial è attivo
-    const isTestimonialActive = (index) => {
-      const normalizedIndex = index - 3 + currentSlide.value
-      return normalizedIndex >= 0 && normalizedIndex < 3
+
+    // Calculate the translateX value for looping
+    const translateX = computed(() => {
+      return -currentSlide.value * slideWidth.value
+    })
+
+    // Compute all testimonials, including clones for looping
+    const computeAllTestimonials = () => {
+      const clonedBefore = testimonials.value.slice(-3)
+      const clonedAfter = testimonials.value.slice(0, 3)
+      return clonedBefore.concat(testimonials.value, clonedAfter)
     }
-    // Naviga a un gruppo specifico di testimonial
+
+    // Navigate to a specific group of testimonials
     const navigateToGroup = (groupIndex) => {
-      currentSlide.value = groupIndex
+      currentSlide.value = groupIndex * 3
     }
 
-    // Punti di navigazione
-    const navigationDots = computed(() => {
-      return testimonials.value.length
-    })
-
-    // Verifica se un punto di navigazione è attivo
+    // Check if a dot is active based on the current slide
     const isDotActive = (dotIndex) => {
-      return dotIndex === currentSlide.value
+      const activeGroupIndex = Math.floor(currentSlide.value / 3)
+      return dotIndex === activeGroupIndex
     }
-
-    // Current slide index
-    const normalizedIndex = computed(() => {
-      return (
-        (currentSlide.value + clonedGroups * 3) % testimonialGroups.value.length
-      )
-    })
 
     // Automatic sliding logic
     let slideInterval = null
@@ -91,65 +92,72 @@ export default {
       clearInterval(slideInterval)
       slideInterval = setInterval(() => {
         currentSlide.value =
-          (currentSlide.value + 1) % testimonials.value.length
+          (currentSlide.value + 1) % allTestimonials.value.length
       }, 5000)
     }
 
-    watch(slideWidth, (newWidth) => {
-      document.documentElement.style.setProperty(
-        '--slide-width',
-        `${newWidth}px`
-      )
+    const visibleGroups = computed(() => {
+      // Calculate the number of visible groups (usually 1 or 2)
+      return Math.ceil(allTestimonials.value.length / 3)
     })
 
-    // Watch per aggiornamenti del slide corrente
+    // Watch for changes in the current slide and adjust the CSS accordingly
     watch(currentSlide, (newVal, oldVal) => {
       const testimonialCards = document.querySelector('.testimonial-cards')
       if (testimonialCards) {
-        const newOffset = -(newVal + 3) * slideWidth.value // Calcola il nuovo offset
-        testimonialCards.style.transform = `translateX(${newOffset}px)`
+        if (newVal === 0) {
+          nextTick(() => {
+            testimonialCards.style.transition = 'none'
+            currentSlide.value = testimonials.length * clonedGroups
+            testimonialCards.style.transform = `translateX(-${
+              testimonials.length * clonedGroups * slideWidth.value
+            }px)`
+            setTimeout(() => {
+              testimonialCards.style.transition = ''
+            }, 0)
+          })
+        }
       }
+    })
 
-      // Gestisce il loop infinito
-      if (newVal === testimonials.value.length) {
-        nextTick(() => {
-          testimonialCards.style.transition = 'none'
-          currentSlide.value = 0
-          testimonialCards.style.transform = 'translateX(0px)'
-          setTimeout(() => {
-            testimonialCards.style.transition = ''
-          }, 0)
-        })
-      }
+    // Watch for changes in the current slide and update dot activation
+    watch(currentSlide, () => {
+      // Calculate the active dot index based on the current slide
+      const activeGroupIndex = Math.floor(currentSlide.value / 3)
+      const dots = document.querySelectorAll('.navigation-dot')
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === activeGroupIndex)
+      })
     })
 
     // Initialization
     onMounted(async () => {
       await fetchTestimonials()
-      setSlideWidth()
+      setCardWidth()
       startSliding()
-      window.addEventListener('resize', setSlideWidth)
+      window.addEventListener('resize', setCardWidth)
     })
 
     // Cleanup
     onBeforeUnmount(() => {
       clearInterval(slideInterval)
-      window.removeEventListener('resize', setSlideWidth)
+      window.removeEventListener('resize', setCardWidth)
     })
 
     return {
       testimonials,
       currentSlide,
       navigateToGroup,
-      navigationDots,
-      allTestimonials,
       isDotActive,
-      slideWidth,
-      isTestimonialActive,
+      translateX,
+      allTestimonials,
+      visibleGroups,
+      cardWidth,
     }
   },
 }
 </script>
+
 <style scoped>
 .testimonials-container {
   overflow: hidden;
