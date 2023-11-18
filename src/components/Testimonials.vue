@@ -28,7 +28,7 @@
   </div>
 </template>
 <script>
-import { ref, onMounted, computed, nextTick, onBeforeUnmount } from 'vue'
+import { ref, onMounted, computed, nextTick, onBeforeUnmount, watch } from 'vue'
 
 export default {
   setup() {
@@ -99,6 +99,13 @@ export default {
       return `-${offset}%`
     })
 
+    // Check if a dot for navigation is currently active
+    const isDotActive = (dotIndex) => {
+      const groupSize = 3
+      const startIndex = Math.floor(currentSlide.value / groupSize)
+      return dotIndex >= startIndex && dotIndex < startIndex + clonedGroups
+    }
+
     // Setup function to initialize testimonials and start automatic sliding
     onMounted(async () => {
       await fetchTestimonials()
@@ -130,6 +137,7 @@ export default {
       navigateToGroup,
       isGroupActive,
       slideOffset,
+      isDotActive,
     }
   },
 }
@@ -155,7 +163,7 @@ export default {
 
 .testimonial-card {
   flex: 0 0 calc(33.33% - 1rem);
-  background-color: var(--white);
+  background-color: var(--red);
   margin: 0.5rem;
   padding: 2rem;
   border-radius: 10px;
