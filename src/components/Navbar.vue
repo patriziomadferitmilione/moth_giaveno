@@ -21,27 +21,27 @@
     <div class="nav-links" :class="{ 'sticky-links': isSticky }">
       <!-- Main navigation links -->
       <router-link class="r_link" to="/about" active-class="active-link">
-        <span class="navbar_titles">About</span>
+        <span class="navbar_titles">ABOUT ME</span>
       </router-link>
 
       <!-- Dropdown for Instruments -->
       <div class="dropdown">
-        <span class="navbar_titles dropdown-toggle">Instruments</span>
+        <span class="navbar_titles dropdown-toggle">INSTRUMENTS</span>
         <div class="dropdown-menu">
-          <router-link class="dropdown-item" to="/guitars">Guitars</router-link>
-          <router-link class="dropdown-item" to="/bass">Bass</router-link>
+          <router-link class="dropdown-item" to="/guitars">GUITARS</router-link>
+          <router-link class="dropdown-item" to="/bass">BASS</router-link>
         </div>
       </div>
 
       <!-- Other Links -->
       <router-link class="r_link" to="/services2">
-        <span class="navbar_titles">Services</span>
+        <span class="navbar_titles">SERVICES</span>
       </router-link>
       <router-link class="r_link" to="/stock">
-        <span class="navbar_titles">Stock</span>
+        <span class="navbar_titles">STOCK</span>
       </router-link>
       <router-link class="r_link" to="/contacts">
-        <span class="navbar_titles">Contacts</span>
+        <span class="navbar_titles">CONTACTS</span>
       </router-link>
 
       <!-- Configuratore -->
