@@ -2,23 +2,19 @@
   <div class="testimonials-container">
     <div class="testimonial-cards">
       <div
-        v-for="(group, groupIndex) in testimonialGroups"
-        :key="'group-' + groupIndex"
-        class="testimonial-group"
-        :class="{ active: isGroupActive(groupIndex) }"
+        v-for="(testimonial, index) in allTestimonials"
+        :key="'testimonial-' + index"
+        class="testimonial-card"
+        :class="{ 'is-active': isTestimonialActive(index) }"
       >
-        <div
-          v-for="(testimonial, index) in group"
-          :key="'testimonial-' + groupIndex + '-' + index"
-          class="testimonial-card"
-        >
-          <!-- Testimonial content goes here -->
-        </div>
+        <div class="testimonial-quote">{{ testimonial.quote }}</div>
+        <div class="testimonial-author">{{ testimonial.author }}</div>
+        <div class="testimonial-title">{{ testimonial.title }}</div>
       </div>
     </div>
     <div class="testimonial-navigation">
       <span
-        v-for="(dot, index) in testimonialGroups"
+        v-for="index in navigationDots"
         :key="'dot-' + index"
         class="navigation-dot"
         :class="{ active: isDotActive(index) }"
@@ -32,117 +28,128 @@ import { ref, onMounted, computed, nextTick, onBeforeUnmount, watch } from 'vue'
 
 export default {
   setup() {
+    // Stato iniziale
     const testimonials = ref([])
     const currentSlide = ref(0)
-    const clonedGroups = 1 // Cloning only one group of testimonials at each end
+    const slideWidth = ref(0)
 
-    // Compute groups of testimonials
-    const testimonialGroups = computed(() => {
-      let groups = []
-      if (testimonials.value.length) {
-        for (let i = 0; i < testimonials.value.length; i += 3) {
-          groups.push(testimonials.value.slice(i, i + 3))
-        }
-        // Cloning groups for a seamless looping effect
-        const clonesAtStart = groups.slice(-clonedGroups)
-        const clonesAtEnd = groups.slice(0, clonedGroups)
-        return clonesAtStart.concat(groups, clonesAtEnd)
-      }
-      return []
-    })
-
-    // Fetch testimonials from a JSON file
-    async function fetchTestimonials() {
+    // Ottieni i testimonial e imposta il carousel
+    const fetchTestimonials = async () => {
       try {
         const response = await fetch('/testimonials.json')
-        if (response.ok) {
-          const originalTestimonials = await response.json()
-          testimonials.value = originalTestimonials
-          currentSlide.value = clonedGroups * 3
-        } else {
-          console.error('Failed to fetch testimonials.json')
-        }
+        if (!response.ok) throw new Error('Failed to fetch testimonials.json')
+        testimonials.value = await response.json()
       } catch (error) {
         console.error('An error occurred:', error)
       }
     }
 
-    // Check if a group of testimonials is currently active
-    const isGroupActive = (groupIndex) => {
-      const totalGroups = testimonialGroups.value.length - 2 * clonedGroups
-      const normalizedIndex =
-        (currentSlide.value / 3 + totalGroups) % totalGroups
-      return groupIndex === normalizedIndex
+    // Imposta la larghezza di ogni slide in base alla larghezza del contenitore
+    const setSlideWidth = () => {
+      const container = document.querySelector('.testimonials-container')
+      if (container) {
+        slideWidth.value = container.offsetWidth / 9
+      }
     }
 
-    // Navigate to a specific group of testimonials
-    const navigateToGroup = (groupIndex) => {
-      currentSlide.value = groupIndex * 3 + clonedGroups * 3
-      // Reset the interval for automatic sliding
-      startSliding()
+    // Testimonial totali, inclusi i cloni per il loop infinito
+    const allTestimonials = computed(() => {
+      const clonesBefore = testimonials.value.slice(-3)
+      const clonesAfter = testimonials.value.slice(0, 3)
+      return clonesBefore.concat(testimonials.value, clonesAfter)
+    })
+    // Verifica se un testimonial è attivo
+    const isTestimonialActive = (index) => {
+      const normalizedIndex = index - 3 + currentSlide.value
+      return normalizedIndex >= 0 && normalizedIndex < 3
     }
+    // Naviga a un gruppo specifico di testimonial
+    const navigateToGroup = (groupIndex) => {
+      currentSlide.value = groupIndex
+    }
+
+    // Punti di navigazione
+    const navigationDots = computed(() => {
+      return testimonials.value.length
+    })
+
+    // Verifica se un punto di navigazione è attivo
+    const isDotActive = (dotIndex) => {
+      return dotIndex === currentSlide.value
+    }
+
+    // Current slide index
+    const normalizedIndex = computed(() => {
+      return (
+        (currentSlide.value + clonedGroups * 3) % testimonialGroups.value.length
+      )
+    })
 
     // Automatic sliding logic
+    let slideInterval = null
     const startSliding = () => {
-      setInterval(() => {
-        let newSlide = currentSlide.value + 3
-        if (newSlide >= testimonials.value.length - clonedGroups * 3) {
-          newSlide = clonedGroups * 3
-        }
-        currentSlide.value = newSlide
+      clearInterval(slideInterval)
+      slideInterval = setInterval(() => {
+        currentSlide.value =
+          (currentSlide.value + 1) % testimonials.value.length
       }, 5000)
     }
 
-    // Compute the offset for the sliding effect
-    const slideOffset = computed(() => {
-      const offset = (currentSlide.value / 3 - clonedGroups) * 100
-      return `-${offset}%`
+    watch(slideWidth, (newWidth) => {
+      document.documentElement.style.setProperty(
+        '--slide-width',
+        `${newWidth}px`
+      )
     })
 
-    // Check if a dot for navigation is currently active
-    const isDotActive = (dotIndex) => {
-      const groupSize = 3
-      const startIndex = Math.floor(currentSlide.value / groupSize)
-      return dotIndex >= startIndex && dotIndex < startIndex + clonedGroups
-    }
+    // Watch per aggiornamenti del slide corrente
+    watch(currentSlide, (newVal, oldVal) => {
+      const testimonialCards = document.querySelector('.testimonial-cards')
+      if (testimonialCards) {
+        const newOffset = -(newVal + 3) * slideWidth.value // Calcola il nuovo offset
+        testimonialCards.style.transform = `translateX(${newOffset}px)`
+      }
 
-    // Setup function to initialize testimonials and start automatic sliding
+      // Gestisce il loop infinito
+      if (newVal === testimonials.value.length) {
+        nextTick(() => {
+          testimonialCards.style.transition = 'none'
+          currentSlide.value = 0
+          testimonialCards.style.transform = 'translateX(0px)'
+          setTimeout(() => {
+            testimonialCards.style.transition = ''
+          }, 0)
+        })
+      }
+    })
+
+    // Initialization
     onMounted(async () => {
       await fetchTestimonials()
+      setSlideWidth()
       startSliding()
+      window.addEventListener('resize', setSlideWidth)
     })
 
-    // Cleanup before the component is unmounted
+    // Cleanup
     onBeforeUnmount(() => {
       clearInterval(slideInterval)
-    })
-
-    // Watch for changes in the current slide and adjust the CSS accordingly
-    watch(currentSlide, () => {
-      nextTick(() => {
-        const testimonialCards = document.querySelector('.testimonial-cards')
-        if (testimonialCards) {
-          if (currentSlide.value !== clonedGroups * 3) {
-            testimonialCards.style.transition = 'transform 0.5s ease'
-          }
-          testimonialCards.style.transform = `translateX(${slideOffset.value})`
-        }
-      })
+      window.removeEventListener('resize', setSlideWidth)
     })
 
     return {
       testimonials,
       currentSlide,
-      testimonialGroups,
       navigateToGroup,
-      isGroupActive,
-      slideOffset,
+      navigationDots,
+      allTestimonials,
       isDotActive,
+      slideWidth,
+      isTestimonialActive,
     }
   },
 }
 </script>
-
 <style scoped>
 .testimonials-container {
   overflow: hidden;
@@ -156,14 +163,16 @@ export default {
 
 .testimonial-cards {
   display: flex;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  transform-origin: center center;
+  flex-wrap: nowrap; /* Ensure testimonials are in a single row */
+  transition: transform 1s ease; /* Smooth transition for sliding */
 }
 
 .testimonial-card {
-  flex: 0 0 calc(33.33% - 1rem);
-  background-color: var(--red);
+  min-width: calc(
+    var(--slide-width) - 1rem
+  ); /* Adjust width based on the container size */
+  flex: 0 0 calc(var(--slide-width) - 1rem);
+  background-color: #f5f5f5; /* Card background color */
   margin: 0.5rem;
   padding: 2rem;
   border-radius: 10px;
@@ -171,42 +180,23 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  transition: all 1.5s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for depth */
 }
 
-.testimonial-footer {
-  display: flex;
-  align-items: center;
-  margin-top: 1rem;
+.testimonial-quote {
+  font-size: 1rem; /* Adjust font size as needed */
+  color: #333; /* Text color */
+  margin-bottom: 1rem;
 }
 
-.testimonial-image {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-right: 1rem;
-  object-fit: cover;
-}
-
-h2,
-h3,
-p {
-  margin: 0;
-}
-
-h2 {
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-h3 {
-  color: #555;
-  font-size: 1rem;
-}
-
-p {
+.testimonial-author {
+  font-weight: bold; /* Author name styling */
   color: #666;
-  font-size: 0.9rem;
+}
+
+.testimonial-title {
+  font-style: italic; /* Title styling */
+  color: #999;
 }
 
 .testimonial-navigation {
@@ -219,33 +209,15 @@ p {
   height: 12px;
   width: 12px;
   border-radius: 50%;
-  background-color: #ddd;
+  background-color: #ddd; /* Dot color */
   margin: 0 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s; /* Smooth transition for dot activation */
 }
 
 .navigation-dot.active {
-  background-color: #333;
+  background-color: #333; /* Active dot color */
 }
 
-.testimonial-bubble {
-  position: relative;
-  padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-.testimonial-quote::before {
-  content: '';
-  position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 20px;
-  background: var(--white);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-}
+/* You may want to add more styles here based on your design requirements */
 </style>
