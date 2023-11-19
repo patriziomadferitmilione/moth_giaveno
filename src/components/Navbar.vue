@@ -40,9 +40,9 @@
       <router-link class="r_link" to="/stock">
         <span class="navbar_titles">STOCK</span>
       </router-link>
-      <router-link class="r_link" to="/contacts">
+      <!-- <router-link class="r_link" to="/contacts">
         <span class="navbar_titles">CONTACTS</span>
-      </router-link>
+      </router-link> -->
 
       <!-- Configuratore -->
       <span class="navbar_titles">Configuratore</span>
