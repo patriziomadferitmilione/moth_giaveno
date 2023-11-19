@@ -12,35 +12,24 @@
         v-for="(service, index) in services"
         :key="index"
       >
-        <!-- Main Row for Title, Content, and Image -->
-        <div class="main-row">
-          <div class="image" :class="{ 'image-left': index % 2 === 0 }">
-            <!-- Add your image here -->
-            <img :src="service.image_path" alt="Image" />
-          </div>
-          <div class="text">
-            <!-- Populate content from the data -->
-            <h2
-              :style="{
-                color: service.title_text_color,
-                background: service.title_background_color,
-              }"
-            >
-              {{ service.title }}
-            </h2>
-            <p
-              :style="{
-                color: service.text_color,
-                background: service.background_color,
-              }"
-            >
-              {{ service.content }}
-            </p>
-          </div>
-        </div>
-
-        <!-- List Row -->
-        <div class="list-row">
+        <!-- Text Section -->
+        <div class="text-section">
+          <h2
+            :style="{
+              color: service.title_text_color,
+              background: service.title_background_color,
+            }"
+          >
+            {{ service.title }}
+          </h2>
+          <p
+            :style="{
+              color: service.text_color,
+              background: service.background_color,
+            }"
+          >
+            {{ service.content }}
+          </p>
           <ul
             v-if="service.list"
             :style="{
@@ -48,11 +37,15 @@
               background: service.background_color,
             }"
           >
-            <!-- Split and create list items if service.list is defined -->
             <li v-for="(item, i) in service.list.split('|')" :key="'list-' + i">
               {{ item }}
             </li>
           </ul>
+        </div>
+
+        <!-- Image Section -->
+        <div class="image">
+          <img :src="service.image_path" alt="Image" />
         </div>
       </div>
     </div>
@@ -63,24 +56,24 @@
 export default {
   data() {
     return {
-      services: [], // Initialize an empty array for services data
-      isLoading: true, // Add a loading indicator flag
+      services: [],
+      isLoading: true,
     }
   },
   methods: {
     async fetchServices() {
       try {
-        const response = await fetch('/services.json') // Adjust the path to your JSON file
+        const response = await fetch('/services.json')
         if (!response.ok) throw new Error('Failed to fetch services data')
         this.services = await response.json()
-        this.isLoading = false // Set isLoading to false when data is loaded
+        this.isLoading = false
       } catch (error) {
         console.error('An error occurred while fetching services data:', error)
       }
     },
   },
   mounted() {
-    this.fetchServices() // Call the function when the component is mounted
+    this.fetchServices()
   },
 }
 </script>
@@ -105,66 +98,57 @@ export default {
 
 .content-row {
   display: flex;
-  flex-direction: column; /* Change to column layout */
+  flex-direction: row;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-/* Style for the main row containing title, content, and image */
-.main-row {
+.content-row:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.image,
+.text-section {
+  flex: 1;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  width: 100%;
-  padding: 1rem;
+  text-align: center;
+  padding: 1rem 3rem;
+}
+.text-section ul {
+  list-style-type: none;
+  text-align: left;
+  margin-top: 1rem;
 }
 
 .image {
   flex: 1;
-  padding: 1rem;
-  border: 3px solid var(--link);
-  background-color: var(--white);
   text-align: center;
+  padding: 1rem;
 }
 
 .image img {
+  width: 40vw;
   max-width: 100%;
 }
 
-.image-left {
-  order: 1;
+.text-section h2 {
+  text-align: center;
+  border-bottom: 3px solid var(--link);
+  width: 50%;
+  margin-bottom: 2rem;
 }
 
-.text {
-  flex: 1;
-  padding: 1rem;
-  background-color: var(--white);
-  border: 3px solid var(--link);
-}
-
-.text h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.text p {
-  font-size: 22px;
-}
-
-/* Style for the list row */
-.list-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem;
+.text-section p {
+  font-size: 20px;
+  text-align: justify;
+  line-height: 1.3;
 }
 
 ul {
-  list-style-type: disc;
-  margin-left: 20px;
-}
-
-ul li {
-  font-size: 18px;
+  list-style-type: none;
+  text-align: center;
 }
 </style>
