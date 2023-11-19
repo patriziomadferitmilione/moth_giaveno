@@ -24,7 +24,7 @@
             >mdi mdi-phone</w-icon
           ></a
         >
-        <p>+39 3389159716</p>
+        <a href="tel:+393389159716">+39 3389159716</a>
         <a href="mailto:mothlutherie@gmail.com">mothlutherie@gmail.com</a>
       </div>
 
@@ -96,6 +96,7 @@ export default {}
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
 .footer-text {

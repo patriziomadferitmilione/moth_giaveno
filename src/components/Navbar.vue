@@ -149,9 +149,13 @@ a:hover {
 .dropdown-menu {
   display: none;
   position: absolute;
-  background-color: var(--white);
+  background-color: transparent;
   z-index: 1;
   border-radius: 5px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-top: none;
+  padding-top: 0.5rem;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -163,6 +167,8 @@ a:hover {
   text-decoration: none;
   display: block;
   padding: 1rem;
+  margin: 0;
+  width: 100%;
 }
 
 .dropdown-item:hover {
