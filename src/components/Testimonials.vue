@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import { ref, onMounted, computed, nextTick, onBeforeUnmount, watch } from 'vue'
+import { ref, computed, nextTick, onBeforeUnmount, onMounted, watch } from 'vue'
 
 export default {
   setup() {
@@ -35,7 +35,6 @@ export default {
     const testimonials = ref([])
     const currentSlide = ref(0)
     const cardWidth = ref(0)
-    const clonedGroups = 1 // Number of cloned groups at each end
     const allTestimonials = ref([])
 
     // Fetch testimonials and set up the carousel
@@ -44,7 +43,11 @@ export default {
         const response = await fetch('/testimonials.json')
         if (!response.ok) throw new Error('Failed to fetch testimonials.json')
         testimonials.value = await response.json()
-        allTestimonials.value = computeAllTestimonials()
+        allTestimonials.value = [
+          ...testimonials.value,
+          ...testimonials.value,
+          ...testimonials.value,
+        ] // Triple to allow infinite looping
       } catch (error) {
         console.error('An error occurred:', error)
       }
@@ -59,21 +62,10 @@ export default {
     }
 
     // Calculate the slide width based on the card width
-    const slideWidth = computed(() => {
-      return cardWidth.value
-    })
+    const slideWidth = computed(() => cardWidth.value)
 
     // Calculate the translateX value for looping
-    const translateX = computed(() => {
-      return -currentSlide.value * slideWidth.value
-    })
-
-    // Compute all testimonials, including clones for looping
-    const computeAllTestimonials = () => {
-      const clonedBefore = testimonials.value.slice(-3)
-      const clonedAfter = testimonials.value.slice(0, 3)
-      return clonedBefore.concat(testimonials.value, clonedAfter)
-    }
+    const translateX = computed(() => -currentSlide.value * slideWidth.value)
 
     // Navigate to a specific group of testimonials
     const navigateToGroup = (groupIndex) => {
@@ -82,8 +74,16 @@ export default {
 
     // Check if a dot is active based on the current slide
     const isDotActive = (dotIndex) => {
-      const activeGroupIndex = Math.floor(currentSlide.value / 3)
-      return dotIndex === activeGroupIndex
+      const startIndex = currentSlide.value
+      const endIndex = startIndex + 2 // Since three testimonials are visible at once
+
+      // Check if the dotIndex is within the range of visible testimonials
+      for (let i = startIndex; i <= endIndex; i++) {
+        if (i % testimonials.value.length === dotIndex) {
+          return true
+        }
+      }
+      return false
     }
 
     // Automatic sliding logic
@@ -91,44 +91,26 @@ export default {
     const startSliding = () => {
       clearInterval(slideInterval)
       slideInterval = setInterval(() => {
-        currentSlide.value =
-          (currentSlide.value + 1) % allTestimonials.value.length
+        if (currentSlide.value >= allTestimonials.value.length - 3) {
+          // Wrap to beginning after a timeout to allow for the transition to complete
+          currentSlide.value += 1
+          setTimeout(() => {
+            nextTick(() => {
+              const testimonialCards =
+                document.querySelector('.testimonial-cards')
+              testimonialCards.style.transition = 'none'
+              currentSlide.value = testimonials.value.length // Jump to the first 'real' slide
+              testimonialCards.style.transform = `translateX(${translateX.value}px)`
+              setTimeout(() => {
+                testimonialCards.style.transition = ''
+              }, 0)
+            })
+          }, 1000) // Assuming the transition duration is 1s
+        } else {
+          currentSlide.value += 1
+        }
       }, 5000)
     }
-
-    const visibleGroups = computed(() => {
-      // Calculate the number of visible groups (usually 1 or 2)
-      return Math.ceil(allTestimonials.value.length / 3)
-    })
-
-    // Watch for changes in the current slide and adjust the CSS accordingly
-    watch(currentSlide, (newVal, oldVal) => {
-      const testimonialCards = document.querySelector('.testimonial-cards')
-      if (testimonialCards) {
-        if (newVal === 0) {
-          nextTick(() => {
-            testimonialCards.style.transition = 'none'
-            currentSlide.value = testimonials.length * clonedGroups
-            testimonialCards.style.transform = `translateX(-${
-              testimonials.length * clonedGroups * slideWidth.value
-            }px)`
-            setTimeout(() => {
-              testimonialCards.style.transition = ''
-            }, 0)
-          })
-        }
-      }
-    })
-
-    // Watch for changes in the current slide and update dot activation
-    watch(currentSlide, () => {
-      // Calculate the active dot index based on the current slide
-      const activeGroupIndex = Math.floor(currentSlide.value / 3)
-      const dots = document.querySelectorAll('.navigation-dot')
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === activeGroupIndex)
-      })
-    })
 
     // Initialization
     onMounted(async () => {
@@ -144,8 +126,20 @@ export default {
       window.removeEventListener('resize', setCardWidth)
     })
 
+    // Watch for changes in the current slide and adjust the CSS accordingly
+    watch(currentSlide, (newVal, oldVal) => {
+      if (newVal < allTestimonials.value.length - 3 && newVal >= 0) {
+        nextTick(() => {
+          const testimonialCards = document.querySelector('.testimonial-cards')
+          testimonialCards.style.transition = ''
+          testimonialCards.style.transform = `translateX(${translateX.value}px)`
+        })
+      }
+    })
+
+    const visibleGroups = computed(() => testimonials.value.length) // Number of dots equals number of original testimonials
+
     return {
-      testimonials,
       currentSlide,
       navigateToGroup,
       isDotActive,
