@@ -46,13 +46,12 @@ export default {
   },
   mounted() {
     this.fetchTestimonials()
-    // Add a delay to reinitialize the carousel
     onMounted(() => {
       setTimeout(() => {
         if (this.carousel.value) {
           this.carousel.value.updateSlideWidth()
         }
-      }, 500) // Adjust the delay if necessary
+      }, 500)
     })
   },
   methods: {
@@ -72,7 +71,7 @@ export default {
 
 <style scoped>
 .carousel {
-  height: 60vh !important;
+  height: 80vh !important;
   display: flex;
   justify-content: center;
   align-items: center;

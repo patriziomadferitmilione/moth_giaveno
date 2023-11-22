@@ -12,6 +12,7 @@
         <img src="/images/6.jpg" alt="Image" />
       </div>
       <div class="text">
+        <h1>About Me</h1>
         <!-- Display paragraphs using string variables -->
         <p>{{ paragraphOne }}</p>
         <p>{{ paragraphTwo }}</p>
@@ -91,6 +92,7 @@ export default {
 }
 
 .content-row {
+  height: 120vh;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -101,8 +103,6 @@ export default {
 .image {
   flex: 1;
   padding: 1rem;
-  /* Example styling for the image container */
-  border: 3px solid var(--link);
   background-color: var(--white);
   text-align: center;
 }
@@ -113,10 +113,16 @@ export default {
 
 .text {
   flex: 2;
-  padding: 1rem;
-  /* Example styling for the text container */
+  padding: 1rem 3rem;
   background-color: var(--white);
-  border: 3px solid var(--link);
+  font-size: 17px;
+  text-align: justify;
+  line-height: 1.3;
+}
+
+.text h1 {
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .paragraph {
