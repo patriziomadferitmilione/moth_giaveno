@@ -22,14 +22,14 @@
           <div class="name">SUMMER SANDALS</div>
         </div>
         <div class="product-item sale">
-          <img src="path-to-pink-dress.jpg" alt="Pink Dress" />
+          <img src="/images/logo.png" alt="Pink Dress" />
           <div class="price">
             <span class="original-price">$89.00</span> $45.00
           </div>
           <div class="name">PINK DRESS</div>
         </div>
         <div class="product-item">
-          <img src="path-to-cotton-dress.jpg" alt="Cotton Dress" />
+          <img src="/images/logo.png" alt="Cotton Dress" />
           <div class="price">$70.00</div>
           <div class="name">COTTON DRESS</div>
         </div>
