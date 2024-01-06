@@ -71,24 +71,24 @@ export default defineComponent({
 
 .carousel__item {
   color: #212121;
-  font-size: 1.2rem;
-  box-shadow: 5px 4px 8px var(--link);
-  background-color: var(--shadow3);
+  font-size: 1.5rem;
+  box-shadow: 5px 4px 8px var(--shadow3);
+  background-color: var(--link);
   border-radius: 5px;
-  padding: 2rem 0;
-  width: 30vw;
-  height: 25vh;
+  width: 35vw;
+  height: 30vh;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
+  background: linear-gradient(to bottom right, var(--white), var(--link));
 }
 
 .carousel__item p {
-  max-width: 55%;
+  max-width: 60%;
+  margin-bottom: 1rem;
 }
 
 .carousel__item img {
@@ -99,6 +99,6 @@ export default defineComponent({
 }
 
 .carousel__item h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 </style>

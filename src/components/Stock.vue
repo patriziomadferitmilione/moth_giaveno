@@ -17,7 +17,7 @@
           :key="product.id"
           @click="openModal(product)"
         >
-          <img src="path-to-sandals.jpg" alt="Summer Sandals" />
+          <img src="/images/logo.png" alt="Summer Sandals" />
           <div class="price">$58.00</div>
           <div class="name">SUMMER SANDALS</div>
         </div>
