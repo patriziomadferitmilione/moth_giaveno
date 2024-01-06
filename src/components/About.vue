@@ -1,19 +1,15 @@
 <template>
   <div>
-    <!-- Page Header -->
     <div class="page-header">
       <h1>About Me</h1>
     </div>
 
-    <!-- Content Row -->
     <div class="content-row">
       <div class="image">
-        <!-- Add your image here -->
         <img src="/images/6.jpg" alt="Image" />
       </div>
       <div class="text">
         <h1>About Me</h1>
-        <!-- Display paragraphs using string variables -->
         <p>{{ paragraphOne }}</p>
         <p>{{ paragraphTwo }}</p>
         <p>{{ paragraphThree }}</p>
@@ -37,13 +33,13 @@ export default {
       paragraphFive: '',
       paragraphSix: '',
       paragraphSeven: '',
-      isLoading: true, // Add a loading indicator flag
+      isLoading: true,
     }
   },
   methods: {
     async fetchAboutParagraphs() {
       try {
-        const response = await fetch('/about.json') // Adjust the path to your JSON file
+        const response = await fetch('/about.json')
         if (!response.ok)
           throw new Error('Failed to fetch about paragraphs data')
         const aboutData = await response.json()
@@ -55,7 +51,7 @@ export default {
         this.paragraphFive = aboutData[0].cinque
         this.paragraphSix = aboutData[0].sei
         this.paragraphSeven = aboutData[0].sette
-        this.isLoading = false // Set isLoading to false when data is loaded
+        this.isLoading = false
         console.log('Fetched about paragraphs:', aboutData)
       } catch (error) {
         console.error(
@@ -66,7 +62,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchAboutParagraphs() // Call the function when the component is mounted
+    this.fetchAboutParagraphs()
   },
 }
 </script>
@@ -109,13 +105,14 @@ export default {
 
 .image img {
   max-width: 100%;
+  box-shadow: 3px 4px 8px var(--shadow);
+  border-radius: 5px;
 }
 
 .text {
   flex: 2;
   padding: 1rem 3rem;
   background-color: var(--white);
-  font-size: 17px;
   text-align: justify;
   line-height: 1.3;
 }
@@ -123,11 +120,12 @@ export default {
 .text h1 {
   text-align: center;
   margin-bottom: 1rem;
+  font-size: 3rem;
 }
 
-.paragraph {
-  font-size: 1rem; /* Example font size for the paragraphs */
-  margin-bottom: 1rem; /* Add margin between paragraphs */
-  line-height: 1.5; /* Set line height for readability */
+.text p {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  padding: 0 2rem;
 }
 </style>

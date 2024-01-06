@@ -45,7 +45,7 @@
       </router-link> -->
 
       <!-- Configuratore -->
-      <span class="navbar_titles">Configuratore</span>
+      <!-- <span class="navbar_titles">Configuratore</span> -->
     </div>
   </w-toolbar>
 </template>

@@ -12,9 +12,9 @@
           >mdi mdi-clock-outline</w-icon
         >
         <div class="footer-text">
-          <p>Mon - Thu: 11.00 - 23.00</p>
-          <p>Sat: 12.00 - 23.00</p>
-          <p>Sun: 12.00 - 21.00</p>
+          <p>Mon Wed Thu Fri 9.00 - 18.00</p>
+          <p>Tue Sat 9.00 - 13.00</p>
+          <p>Sunday closed</p>
         </div>
       </div>
 
