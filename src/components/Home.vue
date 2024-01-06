@@ -17,7 +17,6 @@
         ></span>
       </div>
     </div>
-    <div style="height: 10vh; background-color: var(--white)"></div>
     <Testimonials />
   </div>
 </template>

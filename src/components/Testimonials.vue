@@ -1,5 +1,6 @@
 <template>
   <div class="carousel">
+    <h1>Testimonials</h1>
     <Carousel
       :autoplay="3000"
       :wrap-around="true"
@@ -64,9 +65,14 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 1rem;
   width: 100vw;
-  height: 40vh;
+  height: 50vh;
+  padding-top: 3rem;
+  padding-bottom: 1rem;
+}
+.carousel h1 {
+  color: #212121;
+  font-size: 3rem;
 }
 
 .carousel__item {
