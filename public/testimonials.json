@@ -1,21 +1,21 @@
 [
   {
     "title": "1",
-    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
+    "text": "uno uno uno uno uno uno uno uno uno uno uno uno uno uno",
     "name": "Daniel West",
     "position": "Group CEO",
     "image_path": "/images/testimonials_1.png"
   },
   {
     "title": "2",
-    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
+    "text": "due due due due due",
     "name": "Gloria Tyree",
     "position": "Analyst",
-    "image_path": "/images/testimonials_2.png"
+    "image_path": "/images/testimonials_1.png"
   },
   {
     "title": "3",
-    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
+    "text": "tre tre tre tre tre tre ter tre tre tre ter t ert ert er ",
     "name": "John Selders",
     "position": "Consultant",
     "image_path": "/images/testimonials_1.png"

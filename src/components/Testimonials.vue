@@ -1,58 +1,48 @@
 <template>
-  <Carousel
-    :itemsToShow="3"
-    :wrapAround="true"
-    :transition="500"
-    :autoplay="true"
-    :autoplayTimeout="5000"
-    ref="carousel"
-    class="carousel"
-  >
-    <Slide
-      v-for="(testimonial, index) in testimonials"
-      :key="testimonial.title"
+  <div class="carousel">
+    <Carousel
+      :autoplay="3000"
+      :wrap-around="true"
+      :items-to-show="3"
+      pauseAutoplayOnHover="true"
     >
-      <div class="testimonial-card carousel__slide">
-        <img
-          :src="testimonial.image_path"
-          :alt="testimonial.name"
-          class="testimonial-image"
-        />
-        <h2>{{ testimonial.title }}</h2>
-        <p>{{ testimonial.text }}</p>
-        <p>{{ testimonial.name }}</p>
-        <h6>{{ testimonial.position }}</h6>
-      </div>
-    </Slide>
-  </Carousel>
+      <Slide v-for="(testimonial, index) in testimonials" :key="index">
+        <div class="carousel__item">
+          <img
+            :src="testimonial.image_path"
+            :alt="testimonial.name"
+            class="testimonial-image"
+          />
+          <!-- <h2>{{ testimonial.title }}</h2> -->
+          <p>{{ testimonial.text }}</p>
+          <p>{{ testimonial.name }}</p>
+          <h6>{{ testimonial.position }}</h6>
+        </div>
+      </Slide>
+    </Carousel>
+  </div>
 </template>
-<script>
-import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
-import { onMounted, ref } from 'vue'
 
-export default {
+<script>
+import { defineComponent } from 'vue'
+import { Carousel, Navigation, Slide } from 'vue3-carousel'
+
+import 'vue3-carousel/dist/carousel.css'
+
+export default defineComponent({
+  name: 'CombinedCarousel',
   components: {
     Carousel,
     Slide,
-    Pagination,
     Navigation,
   },
   data() {
     return {
       testimonials: [],
-      carousel: ref(null), // Create a ref for the carousel
     }
   },
   mounted() {
     this.fetchTestimonials()
-    onMounted(() => {
-      setTimeout(() => {
-        if (this.carousel.value) {
-          this.carousel.value.updateSlideWidth()
-        }
-      }, 500)
-    })
   },
   methods: {
     async fetchTestimonials() {
@@ -60,78 +50,55 @@ export default {
         const response = await fetch('/testimonials.json')
         if (!response.ok) throw new Error('Failed to fetch testimonials data')
         this.testimonials = await response.json()
-        console.log(this.testimonials)
       } catch (error) {
         console.error('Error fetching testimonials data:', error)
       }
     },
   },
-}
+})
 </script>
 
 <style scoped>
 .carousel {
-  height: 80vh !important;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  padding: 1rem;
+  width: 100vw;
+  height: 40vh;
 }
 
-.testimonial-card {
-  text-align: center;
-  background: var(--white);
-  border-radius: 5px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.5s ease-in-out;
-  border: 2px solid red !important;
-}
-
-.carousel__slide {
-  transform: scale(0.8);
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column !important;
-}
-
-.carousel__slide--active {
-  opacity: 1;
-  transform: scale(1.25);
-  z-index: 1;
-}
-
-.carousel__slide--prev,
-.carousel__slide--next {
-  opacity: 0.8;
-  z-index: 0;
-  transform: scale(0.9);
-}
-
-.testimonial-card h2,
-.testimonial-card p,
-.testimonial-card h6 {
+.carousel__item {
   color: #212121;
+  font-size: 1.2rem;
+  box-shadow: 5px 4px 8px var(--link);
+  background-color: var(--shadow3);
+  border-radius: 5px;
+  padding: 2rem 0;
+  width: 30vw;
+  height: 25vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
-.testimonial-image {
-  max-width: 100px;
-  border-radius: 50%;
-  display: block;
-  margin: 0 auto;
+.carousel__item p {
+  max-width: 55%;
 }
 
-.carousel__viewport {
-  perspective: 2000px;
+.carousel__item img {
+  max-width: 15%;
+  position: absolute;
+  left: 3%;
+  top: 3%;
 }
 
-.carousel__track {
-  transform-style: preserve-3d;
-}
-
-.carousel__slide--sliding {
-  transition: transform 0.5s ease;
+.carousel__item h2 {
+  font-size: 1.8rem;
 }
 </style>
